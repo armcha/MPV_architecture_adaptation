@@ -3,10 +3,9 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
 
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -35,9 +34,10 @@ android {
 ext.archVersion = '1.1.0'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.0'
-    implementation "android.arch.lifecycle:extensions:${archVersion}"
-    annotationProcessor "android.arch.lifecycle:compiler:${archVersion}"
+    implementation 'com.android.support:appcompat-v7:27.0.2'
+    implementation "android.arch.lifecycle:runtime:1.1.0"
+    implementation "android.arch.lifecycle:extensions:1.1.0"
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {

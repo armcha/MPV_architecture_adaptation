@@ -12,10 +12,10 @@ abstract class BaseMVPFragment<V : BaseMVPContract.View, out P : BaseMVPContract
 
     protected abstract fun initPresenter(): P
 
-    @CallSuper
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        presenterDelegate.create(this, createPresenter = { initPresenter() })
+    fun createPresenter(){
+        presenterDelegate.create(this, createPresenter = {
+            initPresenter()
+        })
     }
 
     @CallSuper

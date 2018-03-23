@@ -3,27 +3,51 @@ package io.github.armcha.architecturesampleproject.ui.base
 import android.os.Bundle
 import io.armcha.arch.BaseMVPActivity
 import io.github.armcha.architecturesampleproject.App
-import io.github.armcha.architecturesampleproject.di.component.ActivityComponent
+import io.github.armcha.architecturesampleproject.di.component.ScreenComponent
 import io.github.armcha.architecturesampleproject.di.module.ActivityModule
+import io.github.armcha.architecturesampleproject.di.module.ScreenModule
 
-abstract class BaseActivity<V : BaseContract.View, out P : BaseContract.Presenter<V>>
+abstract class BaseActivity<V : BaseContract.View, P : BaseContract.Presenter<V>>
     : BaseMVPActivity<V, P>(), BaseContract.View {
 
-    //protected abstract val presenter: P
+    protected abstract val presenter: P
 
-    val activityComponent: ActivityComponent by lazy {
-        App.applicationComponent + ActivityModule(this)
+    // private lateinit var holder: HolderRetainFragment
+
+    private var screenComponent: ScreenComponent? = null
+
+    val activityComponent by lazy {
+        screenComponent!! + ActivityModule(this)
     }
 
     abstract fun inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-       // App.createPresenterComponent()
-        inject()
         super.onCreate(savedInstanceState)
+//        if (supportFragmentManager.findFragmentByTag("TAG123") == null) {
+//            holder = HolderRetainFragment()
+//            supportFragmentManager.beginTransaction().add(holder, "TAG123").commit()
+//        } else {
+//            holder = supportFragmentManager.findFragmentByTag("TAG123") as HolderRetainFragment
+//        }
+        screenComponent = lastCustomNonConfigurationInstance as? ScreenComponent
+                ?: App.applicationComponent + ScreenModule()
+        inject()
+        createPresenter()
     }
 
-//    override fun initPresenter(): P {
-//        return presenter
-//    }
+    override fun onRetainCustomNonConfigurationInstance(): Any {
+        return screenComponent ?: super.onRetainCustomNonConfigurationInstance()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (isFinishing) {
+            screenComponent = null
+        }
+    }
+
+    override fun initPresenter(): P {
+        return presenter
+    }
 }

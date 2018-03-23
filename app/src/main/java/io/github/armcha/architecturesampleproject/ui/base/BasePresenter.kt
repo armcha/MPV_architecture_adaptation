@@ -18,15 +18,6 @@ abstract class BasePresenter<V : BaseContract.View>
     @Inject
     protected lateinit var fetcher: Fetcher
 
-    override fun onPresenterCreate() {
-        super.onPresenterCreate()
-        Log.e("BasePresenter", "onPresenterCreate  ${hashCode()}")
-    }
-
-    init {
-        Log.e("BasePresenter", "init  ${hashCode()}")
-    }
-
     fun <TYPE> fetch(flowable: Flowable<TYPE>,
                      requestType: RequestType = RequestType.TYPE_NONE, success: (TYPE) -> Unit) {
         fetcher.fetch(flowable, requestType, this, success)

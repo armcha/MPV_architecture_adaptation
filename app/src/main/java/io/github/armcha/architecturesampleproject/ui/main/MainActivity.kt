@@ -15,13 +15,13 @@ class MainActivity : BaseActivity<MainActivityContract.View, MainActivityContrac
         MainActivityContract.View {
 
     @Inject
-    lateinit var mainPresenter: MainActivityPresenter
+    override lateinit var presenter: MainActivityPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.e("presenter", "presenter ${presenter.hashCode()}")
-        Log.e("presenter", "presenter ${mainPresenter.hashCode()}")
+        Log.e("mainPresenter", "mainPresenter ${presenterDelegate.presenter.hashCode()}")
 
         findViewById<View>(R.id.firstButton).setOnClickListener {
             presenter.doSomethingHeavy()
@@ -31,18 +31,8 @@ class MainActivity : BaseActivity<MainActivityContract.View, MainActivityContrac
         }
     }
 
-    override fun onDestroy() {
-        Log.e("MainActivity", "" + isFinishing + "")
-        Log.e("MainActivity", "" + isChangingConfigurations + "")
-        super.onDestroy()
-    }
-
     override fun showSomething(user: User) {
         Toast.makeText(this, user.name, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun initPresenter(): MainActivityContract.Presenter {
-        return mainPresenter
     }
 
     override fun inject() {
