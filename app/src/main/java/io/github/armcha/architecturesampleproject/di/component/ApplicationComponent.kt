@@ -23,9 +23,7 @@ interface ApplicationComponent {
         fun build(): ApplicationComponent
     }
 
-    //fun screenComp():ScreenComponent
+    fun screenBuilder(): ScreenComponent.Builder
 
-    operator fun plus(screenModule: ScreenModule): ScreenComponent
-
-    //fun inject(app: App)
+    fun inject(app: App)
 }

@@ -11,7 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Singleton
 
-@Module
+@Module(subcomponents = [ScreenComponent::class])
 class ApplicationModule {
 
     @Singleton

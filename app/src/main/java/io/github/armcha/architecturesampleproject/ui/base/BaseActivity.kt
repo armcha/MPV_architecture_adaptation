@@ -16,11 +16,17 @@ abstract class BaseActivity<V : BaseContract.View, out P : BaseContract.Presente
     abstract fun inject()
 
     override fun insertStoreObject(): Any? {
-        return App.applicationComponent + ScreenModule()
+        return App.applicationComponent
+                .screenBuilder()
+                .build()
     }
 
     override fun onStoredObjectReady(storedObject: Any?) {
-        activityComponent = (storedObject as ScreenComponent) + ActivityModule(this)
+        val screenComponent = storedObject as ScreenComponent
+        activityComponent = screenComponent
+                .activityComponentBuilder()
+                .activity(this)
+                .build()
         inject()
     }
 }

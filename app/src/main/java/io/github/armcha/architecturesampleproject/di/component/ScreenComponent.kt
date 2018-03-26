@@ -1,6 +1,8 @@
 package io.github.armcha.architecturesampleproject.di.component
 
+import dagger.BindsInstance
 import dagger.Subcomponent
+import dagger.android.support.AndroidSupportInjectionModule
 import io.github.armcha.architecturesampleproject.di.module.ActivityModule
 import io.github.armcha.architecturesampleproject.di.module.ScreenModule
 import io.github.armcha.architecturesampleproject.di.scope.PerScreen
@@ -10,5 +12,11 @@ import io.github.armcha.architecturesampleproject.di.scope.PerScreen
 @Subcomponent(modules = [ScreenModule::class])
 interface ScreenComponent {
 
-    operator fun plus(activityModule: ActivityModule): ActivityComponent
+    @Subcomponent.Builder
+    interface Builder {
+
+        fun build(): ScreenComponent
+    }
+
+    fun activityComponentBuilder(): ActivityComponent.Builder
 }

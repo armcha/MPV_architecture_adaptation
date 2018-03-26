@@ -1,6 +1,5 @@
 package io.github.armcha.architecturesampleproject.ui.base
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +8,6 @@ import io.armcha.arch.BaseMVPFragment
 import io.github.armcha.architecturesampleproject.App
 import io.github.armcha.architecturesampleproject.di.component.ActivityComponent
 import io.github.armcha.architecturesampleproject.di.component.FragmentComponent
-import io.github.armcha.architecturesampleproject.di.component.ScreenComponent
-import io.github.armcha.architecturesampleproject.di.module.FragmentModule
-import io.github.armcha.architecturesampleproject.di.module.ScreenModule
 
 abstract class BaseFragment<V : BaseContract.View, out P : BaseContract.Presenter<V>>
     : BaseMVPFragment<V, P>(), BaseContract.View {
@@ -24,19 +20,16 @@ abstract class BaseFragment<V : BaseContract.View, out P : BaseContract.Presente
     abstract fun inject()
 
     override fun insertStoreObject(): Any? {
-        return App.applicationComponent + ScreenModule()
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        if(isRemoving){
-
-        }
+        return App.applicationComponent
+                .screenBuilder()
+                .build()
     }
 
     override fun onStoredObjectReady(storedObject: Any?) {
         val base = activity as BaseActivity<*, *>
-        fragmentComponent = base.activityComponent + FragmentModule()
+        fragmentComponent = base.activityComponent
+                .fragmentComponentBuilder()
+                .build()
         inject()
     }
 
