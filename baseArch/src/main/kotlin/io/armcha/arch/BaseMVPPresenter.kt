@@ -5,6 +5,7 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.os.Bundle
 import android.support.annotation.CallSuper
+import android.util.Log
 
 import org.jetbrains.annotations.Contract
 
@@ -33,10 +34,12 @@ abstract class BaseMVPPresenter<V : BaseMVPContract.View> : LifecycleObserver, B
     }
 
     override fun onPresenterDestroy() {
+        Log.e("onPresenterDestroy", "onPresenterDestroy ${this.javaClass.simpleName} with hashcode ${hashCode()}")
         //NO-OP
     }
 
     override fun onPresenterCreate() {
+        Log.e("onPresenterCreate", "onPresenterCreate ${this.javaClass.simpleName} with hashcode ${hashCode()}")
         //NO-OP
     }
 }

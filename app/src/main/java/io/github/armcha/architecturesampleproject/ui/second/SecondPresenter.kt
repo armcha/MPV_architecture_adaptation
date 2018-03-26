@@ -8,4 +8,6 @@ import javax.inject.Inject
 class SecondPresenter @Inject constructor()
     : BasePresenter<SecondContract.View>(), SecondContract.Presenter {
 
+
+
 }

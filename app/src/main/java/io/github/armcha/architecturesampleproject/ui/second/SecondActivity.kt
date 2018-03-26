@@ -16,7 +16,6 @@ class SecondActivity : BaseActivity<SecondContract.View, SecondContract.Presente
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
         Log.e("presenter", "presenter ${presenter.hashCode()}")
-        Log.e("secondPresenter", "secondPresenter ${presenterDelegate.presenter.hashCode()}")
     }
 
     override fun inject() {

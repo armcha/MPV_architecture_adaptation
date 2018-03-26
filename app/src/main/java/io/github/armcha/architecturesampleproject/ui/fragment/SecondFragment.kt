@@ -9,7 +9,7 @@ import io.github.armcha.architecturesampleproject.ui.base.BaseFragment
 import javax.inject.Inject
 
 
-class MainFragment : BaseFragment<MainFragmentContract.View, MainFragmentContract.Presenter>(), MainFragmentContract.View {
+class SecondFragment : BaseFragment<SecondFragmentContract.View, SecondFragmentContract.Presenter>(), SecondFragmentContract.View {
 
     override val layoutResId = R.layout.fragment_main
 
@@ -18,11 +18,11 @@ class MainFragment : BaseFragment<MainFragmentContract.View, MainFragmentContrac
     }
 
     @Inject
-    override lateinit var presenter: MainFragmentPresenter
+    override lateinit var presenter: SecondFragmentPresenter
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("MainFragment", "MainFragment ${presenter.hashCode()}")
+        Log.e("SecondFragment", "SecondFragment ${presenter.hashCode()}")
     }
 }

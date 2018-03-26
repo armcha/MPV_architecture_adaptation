@@ -8,6 +8,8 @@ import android.widget.Toast
 import io.github.armcha.architecturesampleproject.R
 import io.github.armcha.architecturesampleproject.domain.model.User
 import io.github.armcha.architecturesampleproject.ui.base.BaseActivity
+import io.github.armcha.architecturesampleproject.ui.fragment.MainFragment
+import io.github.armcha.architecturesampleproject.ui.fragment.SecondFragment
 import io.github.armcha.architecturesampleproject.ui.second.SecondActivity
 import javax.inject.Inject
 
@@ -21,7 +23,6 @@ class MainActivity : BaseActivity<MainActivityContract.View, MainActivityContrac
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.e("presenter", "presenter ${presenter.hashCode()}")
-        Log.e("mainPresenter", "mainPresenter ${presenterDelegate.presenter.hashCode()}")
 
         findViewById<View>(R.id.firstButton).setOnClickListener {
             presenter.doSomethingHeavy()
@@ -29,6 +30,18 @@ class MainActivity : BaseActivity<MainActivityContract.View, MainActivityContrac
         findViewById<View>(R.id.secondButton).setOnClickListener {
             startActivity(Intent(this, SecondActivity::class.java))
         }
+
+
+    }
+
+    override fun openFragment() {
+        supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer,MainFragment())
+                .commit()
+        supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer,SecondFragment())
+                .addToBackStack(null)
+                .commit()
     }
 
     override fun showSomething(user: User) {

@@ -15,6 +15,7 @@ class MainActivityPresenter @Inject constructor(private val someInteractor: Some
         super.onPresenterCreate()
         //Log.e("PRESENTER", "onPresenterCreate")
         fetch(someInteractor.getUser(), RequestType.GET_USER, getUserSuccess)
+        view?.openFragment()
     }
 
     private val getUserSuccess = { user: User ->

@@ -1,41 +1,54 @@
 package io.armcha.arch
 
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.annotation.CallSuper
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 
-abstract class BaseMVPActivity<V : BaseMVPContract.View, P : BaseMVPContract.Presenter<V>>
-    : AppCompatActivity(), BaseMVPContract.View {
+abstract class BaseMVPActivity<V : BaseMVPContract.View, out P : BaseMVPContract.Presenter<V>>
+    : AppCompatActivity(), BaseMVPContract.View,BaseViewModel.ClearCallBack {
 
-    val presenterDelegate = PresenterDelegate<V, P>()
+    private val factory = BaseViewModelFactory<Any>()
+    private lateinit var secondBaseViewModel: BaseViewModel<Any>
+    private var storedObject: Any? = null
+    abstract val presenter: P
 
-    // protected val presenter: P
-    //    get() = presenterDelegate.presenter
-
-    protected abstract fun initPresenter(): P
-
-    @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        secondBaseViewModel = ViewModelProviders
+                .of(this, factory)
+                .get(BaseViewModel::class.java) as BaseViewModel<Any>
+        var isFirstCreation = false
+        if (!secondBaseViewModel.hasStoredObject()) {
+            isFirstCreation = true
+            secondBaseViewModel.storeObject(insertStoreObject())
+        }
+        secondBaseViewModel.clearCallBack = this
+        storedObject = secondBaseViewModel.storedObject
+        //
+        // Log.e("onCreate", "storedObject hashcode ${storedObject?.hashCode()}")
+        onStoredObjectReady(storedObject)
+        presenter.attachLifecycle(lifecycle)
+        presenter.attachView(this as V)
+        if (isFirstCreation) {
+            presenter.onPresenterCreate()
+        }
     }
 
-    fun createPresenter() {
-        presenterDelegate.create(this, createPresenter = {
-            initPresenter()
-        })
+    override fun onCleared() {
+        //Log.e("onCleared", "onCleared BaseActivity")
+        presenter.onPresenterDestroy()
     }
 
-    fun createScreenComponent() {
+    abstract fun onStoredObjectReady(storedObject:Any?)
 
-    }
-
-    fun releaseScreenComponent() {
-
-    }
-
-    @CallSuper
     override fun onDestroy() {
-        presenterDelegate.destroy(lifecycle)
+        presenter.detachLifecycle(lifecycle)
+        presenter.detachView()
         super.onDestroy()
+        secondBaseViewModel.clearCallBack = null
     }
+
+    abstract fun insertStoreObject(): Any?
 }
+
