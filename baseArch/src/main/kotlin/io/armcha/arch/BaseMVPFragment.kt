@@ -14,17 +14,7 @@ abstract class BaseMVPFragment<V : BaseMVPContract.View, out P : BaseMVPContract
     private val factory = BaseViewModelFactory<Any>()
     private lateinit var secondBaseViewModel: BaseViewModel<Any>
     private var storedObject: Any? = null
-    abstract val presenter: P
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
+    protected abstract val presenter: P
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

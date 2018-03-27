@@ -2,9 +2,11 @@ package io.github.armcha.architecturesampleproject.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.view.AsyncLayoutInflater
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import io.github.armcha.architecturesampleproject.App
 import io.github.armcha.architecturesampleproject.R
 import io.github.armcha.architecturesampleproject.domain.model.User
 import io.github.armcha.architecturesampleproject.ui.base.BaseActivity
@@ -15,9 +17,6 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity<MainActivityContract.View, MainActivityContract.Presenter>(),
         MainActivityContract.View {
-
-    @Inject
-    override lateinit var presenter: MainActivityPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,16 +29,14 @@ class MainActivity : BaseActivity<MainActivityContract.View, MainActivityContrac
         findViewById<View>(R.id.secondButton).setOnClickListener {
             startActivity(Intent(this, SecondActivity::class.java))
         }
-
-
     }
 
     override fun openFragment() {
         supportFragmentManager.beginTransaction()
-                .add(R.id.fragmentContainer,MainFragment())
+                .add(R.id.fragmentContainer, MainFragment())
                 .commit()
         supportFragmentManager.beginTransaction()
-                .add(R.id.fragmentContainer,SecondFragment())
+                .add(R.id.fragmentContainer, SecondFragment())
                 .addToBackStack(null)
                 .commit()
     }

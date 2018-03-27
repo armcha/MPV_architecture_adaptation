@@ -13,16 +13,12 @@ class MainFragment : BaseFragment<MainFragmentContract.View, MainFragmentContrac
 
     override val layoutResId = R.layout.fragment_main
 
-    override fun inject() {
-        fragmentComponent.inject(this)
-    }
-
-    @Inject
-    override lateinit var presenter: MainFragmentPresenter
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e("MainFragment", "MainFragment ${presenter.hashCode()}")
+    }
+
+    override fun inject() {
+        fragmentComponent.inject(this)
     }
 }

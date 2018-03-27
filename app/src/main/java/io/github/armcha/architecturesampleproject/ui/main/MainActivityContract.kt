@@ -15,6 +15,7 @@ interface MainActivityContract {
 
     interface View : BaseContract.View {
         fun showSomething(user: User)
+
         fun openFragment()
     }
 

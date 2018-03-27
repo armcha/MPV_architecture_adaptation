@@ -8,7 +8,7 @@ import io.github.armcha.architecturesampleproject.di.scope.PerScreen
 import io.github.armcha.architecturesampleproject.domain.repository.SomeRepository
 
 @Module(subcomponents = [ActivityComponent::class])
-class ScreenModule{
+class ScreenModule {
 
     @PerScreen
     @Provides

@@ -1,19 +1,18 @@
 package io.github.armcha.architecturesampleproject.ui.base
 
-import android.os.Bundle
 import io.armcha.arch.BaseMVPActivity
 import io.github.armcha.architecturesampleproject.App
 import io.github.armcha.architecturesampleproject.di.component.ActivityComponent
 import io.github.armcha.architecturesampleproject.di.component.ScreenComponent
-import io.github.armcha.architecturesampleproject.di.module.ActivityModule
-import io.github.armcha.architecturesampleproject.di.module.ScreenModule
+import javax.inject.Inject
 
-abstract class BaseActivity<V : BaseContract.View, out P : BaseContract.Presenter<V>>
+abstract class BaseActivity<V : BaseContract.View,  P : BaseContract.Presenter<V>>
     : BaseMVPActivity<V, P>(), BaseContract.View {
 
     lateinit var activityComponent: ActivityComponent
 
-    abstract fun inject()
+    @Inject
+    override lateinit var presenter: P
 
     override fun insertStoreObject(): Any? {
         return App.applicationComponent
@@ -29,4 +28,6 @@ abstract class BaseActivity<V : BaseContract.View, out P : BaseContract.Presente
                 .build()
         inject()
     }
+
+    abstract fun inject()
 }

@@ -8,14 +8,19 @@ import io.armcha.arch.BaseMVPFragment
 import io.github.armcha.architecturesampleproject.App
 import io.github.armcha.architecturesampleproject.di.component.ActivityComponent
 import io.github.armcha.architecturesampleproject.di.component.FragmentComponent
+import javax.inject.Inject
 
-abstract class BaseFragment<V : BaseContract.View, out P : BaseContract.Presenter<V>>
+abstract class BaseFragment<V : BaseContract.View, P : BaseContract.Presenter<V>>
     : BaseMVPFragment<V, P>(), BaseContract.View {
 
     protected abstract val layoutResId: Int
 
     protected lateinit var fragmentComponent: FragmentComponent
+
     protected lateinit var activityComponent: ActivityComponent
+
+    @Inject
+    override lateinit var presenter: P
 
     abstract fun inject()
 

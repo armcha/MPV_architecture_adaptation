@@ -9,7 +9,7 @@ import io.github.armcha.architecturesampleproject.di.component.FragmentComponent
 import io.github.armcha.architecturesampleproject.di.scope.PerActivity
 
 @Module(subcomponents = [FragmentComponent::class])
-class ActivityModule{
+class ActivityModule {
 
     @PerActivity
     @Provides
