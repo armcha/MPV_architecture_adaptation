@@ -3,10 +3,9 @@ package io.armcha.arch
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 
 abstract class BaseMVPActivity<V : BaseMVPContract.View, out P : BaseMVPContract.Presenter<V>>
-    : AppCompatActivity(), BaseMVPContract.View,BaseViewModel.ClearCallBack {
+    : AppCompatActivity(), BaseMVPContract.View, BaseViewModel.ClearCallBack {
 
     private val factory = BaseViewModelFactory<Any>()
     private lateinit var secondBaseViewModel: BaseViewModel<Any>
@@ -40,7 +39,7 @@ abstract class BaseMVPActivity<V : BaseMVPContract.View, out P : BaseMVPContract
         presenter.onPresenterDestroy()
     }
 
-    abstract fun onStoredObjectReady(storedObject:Any?)
+    abstract fun onStoredObjectReady(storedObject: Any?)
 
     override fun onDestroy() {
         presenter.detachLifecycle(lifecycle)

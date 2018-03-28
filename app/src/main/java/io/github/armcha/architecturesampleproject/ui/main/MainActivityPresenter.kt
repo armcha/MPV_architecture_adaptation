@@ -1,5 +1,6 @@
 package io.github.armcha.architecturesampleproject.ui.main
 
+import dagger.Binds
 import io.github.armcha.architecturesampleproject.di.scope.PerScreen
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
 import io.github.armcha.architecturesampleproject.domain.interactor.SomeInteractor
@@ -15,13 +16,17 @@ class MainActivityPresenter @Inject constructor(private val someInteractor: Some
         super.onPresenterCreate()
         //Log.e("PRESENTER", "onPresenterCreate")
         fetch(someInteractor.getUser(), RequestType.GET_USER, getUserSuccess)
-        view?.openFragment()
+        //view?.openFragment()
     }
 
     private val getUserSuccess = { user: User ->
       //  Log.e("PRESENTER", "getUserSuccess")
         view?.showSomething(user)
         Unit
+    }
+
+    fun a(){
+
     }
 
     override fun doSomethingHeavy() {

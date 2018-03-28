@@ -6,8 +6,8 @@ import io.github.armcha.architecturesampleproject.di.component.ActivityComponent
 import io.github.armcha.architecturesampleproject.di.component.ScreenComponent
 import javax.inject.Inject
 
-abstract class BaseActivity<V : BaseContract.View,  P : BaseContract.Presenter<V>>
-    : BaseMVPActivity<V, P>(), BaseContract.View {
+abstract class BaseActivity<V : BaseContract.View,P : BaseContract.Presenter<V>>
+    : BaseMVPActivity<V, P>(), BaseContract.View{
 
     lateinit var activityComponent: ActivityComponent
 

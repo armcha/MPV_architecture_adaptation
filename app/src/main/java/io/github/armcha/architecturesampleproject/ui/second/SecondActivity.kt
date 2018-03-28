@@ -5,7 +5,7 @@ import android.util.Log
 import io.github.armcha.architecturesampleproject.R
 import io.github.armcha.architecturesampleproject.ui.base.BaseActivity
 
-class SecondActivity : BaseActivity<SecondContract.View, SecondContract.Presenter>(), SecondContract.View {
+class SecondActivity : BaseActivity<SecondContract.View, SecondPresenter>(), SecondContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -8,7 +8,7 @@ interface BaseMVPContract {
 
     interface View
 
-    interface Presenter<V : BaseMVPContract.View> {
+    interface Presenter<V : View> {
 
         val view: V?
 

@@ -8,7 +8,7 @@ import dagger.Provides
 import io.github.armcha.architecturesampleproject.di.component.FragmentComponent
 import io.github.armcha.architecturesampleproject.di.scope.PerActivity
 
-@Module(subcomponents = [FragmentComponent::class])
+@Module
 class ActivityModule {
 
     @PerActivity
