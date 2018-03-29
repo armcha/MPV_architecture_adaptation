@@ -3,18 +3,18 @@ package io.armcha.arch
 import android.arch.lifecycle.ViewModel
 import android.util.Log
 
-class BaseViewModel<T> : ViewModel() {
+class BaseViewModel : ViewModel() {
 
     interface ClearCallBack {
         fun onCleared()
     }
 
     var clearCallBack: ClearCallBack? = null
-    var storedObject: T? = null
+    var storedObject: Any? = null
 
-    fun storeObject(any: T?) {
+    fun storeObject(any: Any?) {
         storedObject = any
-        val aaa = storedObject as Any?
+        val aaa = storedObject
         Log.e("storeObject", "Stored object ${aaa?.javaClass?.simpleName} with hashcode ${aaa?.hashCode()}")
     }
 

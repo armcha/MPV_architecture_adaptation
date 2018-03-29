@@ -4,15 +4,13 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 
 abstract class BaseMVPFragment<V : BaseMVPContract.View, out P : BaseMVPContract.Presenter<V>>
-    : Fragment(), BaseMVPContract.View,BaseViewModel.ClearCallBack {
+    : Fragment(), BaseMVPContract.View, BaseViewModel.ClearCallBack {
 
-    private val factory = BaseViewModelFactory<Any>()
-    private lateinit var secondBaseViewModel: BaseViewModel<Any>
+    private val factory = BaseViewModelFactory()
+    private lateinit var secondBaseViewModel: BaseViewModel
     private var storedObject: Any? = null
     protected abstract val presenter: P
 
@@ -20,7 +18,7 @@ abstract class BaseMVPFragment<V : BaseMVPContract.View, out P : BaseMVPContract
         super.onViewCreated(view, savedInstanceState)
         secondBaseViewModel = ViewModelProviders
                 .of(this, factory)
-                .get(BaseViewModel::class.java) as BaseViewModel<Any>
+                .get(BaseViewModel::class.java)
         var isFirstCreation = false
         if (!secondBaseViewModel.hasStoredObject()) {
             isFirstCreation = true

@@ -18,6 +18,7 @@ import javax.inject.Inject
 class MainActivity : BaseActivity<MainActivityContract.View, MainActivityContract.Presenter>(),
         MainActivityContract.View {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

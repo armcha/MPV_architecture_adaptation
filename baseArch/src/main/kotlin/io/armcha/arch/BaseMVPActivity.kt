@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity
 abstract class BaseMVPActivity<V : BaseMVPContract.View, out P : BaseMVPContract.Presenter<V>>
     : AppCompatActivity(), BaseMVPContract.View, BaseViewModel.ClearCallBack {
 
-    private val factory = BaseViewModelFactory<Any>()
-    private lateinit var secondBaseViewModel: BaseViewModel<Any>
+    private val factory = BaseViewModelFactory()
+    private lateinit var secondBaseViewModel: BaseViewModel
     private var storedObject: Any? = null
     abstract val presenter: P
 
@@ -16,7 +16,7 @@ abstract class BaseMVPActivity<V : BaseMVPContract.View, out P : BaseMVPContract
         super.onCreate(savedInstanceState)
         secondBaseViewModel = ViewModelProviders
                 .of(this, factory)
-                .get(BaseViewModel::class.java) as BaseViewModel<Any>
+                .get(BaseViewModel::class.java)
         var isFirstCreation = false
         if (!secondBaseViewModel.hasStoredObject()) {
             isFirstCreation = true
@@ -24,7 +24,6 @@ abstract class BaseMVPActivity<V : BaseMVPContract.View, out P : BaseMVPContract
         }
         secondBaseViewModel.clearCallBack = this
         storedObject = secondBaseViewModel.storedObject
-        //
         // Log.e("onCreate", "storedObject hashcode ${storedObject?.hashCode()}")
         onStoredObjectReady(storedObject)
         presenter.attachLifecycle(lifecycle)

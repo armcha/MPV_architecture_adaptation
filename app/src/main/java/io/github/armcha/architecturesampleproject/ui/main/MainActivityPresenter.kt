@@ -1,6 +1,5 @@
 package io.github.armcha.architecturesampleproject.ui.main
 
-import dagger.Binds
 import io.github.armcha.architecturesampleproject.di.scope.PerScreen
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
 import io.github.armcha.architecturesampleproject.domain.interactor.SomeInteractor
