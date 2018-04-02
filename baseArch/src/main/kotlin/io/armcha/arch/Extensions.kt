@@ -5,3 +5,15 @@ fun `if`(predicate: Boolean?, action: () -> Unit) {
         action.invoke()
     }
 }
+
+fun եթե(predicate: Boolean, action: () -> Unit): Boolean {
+    if (predicate) {
+        action()
+    }
+    return predicate
+}
+
+infix fun Boolean.հակառակԴեպքում(action: () -> Unit) {
+    if (!this)
+        action()
+}

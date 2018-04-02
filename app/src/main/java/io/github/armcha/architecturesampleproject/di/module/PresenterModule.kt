@@ -16,19 +16,15 @@ import io.github.armcha.architecturesampleproject.ui.second.SecondPresenter
 @Module
 abstract class PresenterModule {
 
-    @PerScreen
     @Binds
     abstract fun bindMainPresenter(mainActivityPresenter: MainActivityPresenter): MainActivityContract.Presenter
 
-//    @PerScreen
 //    @Binds
 //    abstract fun bindSecondPresenter(secActivityPresenter: SecondPresenter): SecondContract.Presenter
 
-    @PerScreen
     @Binds
     abstract fun bindMainFragmentPresenter(mainFragmentPresenter: MainFragmentPresenter): MainFragmentContract.Presenter
 
-    @PerScreen
     @Binds
     abstract fun bindSecondFragmentPresenter(secondFragmentPresenter: SecondFragmentPresenter): SecondFragmentContract.Presenter
 

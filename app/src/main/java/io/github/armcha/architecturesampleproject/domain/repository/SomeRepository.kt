@@ -7,7 +7,7 @@ import io.reactivex.Flowable
 
 interface SomeRepository {
 
-    fun getUser(): Flowable<User>
+    fun getUser(): Flowable<List<User>>
 
     fun saveUser(user: User): Completable
 }

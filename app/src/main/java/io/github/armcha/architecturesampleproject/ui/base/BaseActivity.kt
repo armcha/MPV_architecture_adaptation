@@ -9,10 +9,12 @@ import javax.inject.Inject
 abstract class BaseActivity<V : BaseContract.View, P : BaseContract.Presenter<V>>
     : BaseMVPActivity<V, P>(), BaseContract.View {
 
-    lateinit var activityComponent: ActivityComponent
-
     @Inject
     override lateinit var presenter: P
+
+    lateinit var activityComponent: ActivityComponent
+
+    abstract fun inject()
 
     override fun insertStoreObject(): Any? {
         return App.applicationComponent
@@ -28,6 +30,4 @@ abstract class BaseActivity<V : BaseContract.View, P : BaseContract.Presenter<V>
                 .build()
         inject()
     }
-
-    abstract fun inject()
 }

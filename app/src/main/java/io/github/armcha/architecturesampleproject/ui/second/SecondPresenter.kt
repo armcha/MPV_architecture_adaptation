@@ -9,6 +9,4 @@ import javax.inject.Inject
 class SecondPresenter @Inject constructor(private val someInteractor: SomeInteractor)
     : BasePresenter<SecondContract.View>(), SecondContract.Presenter {
 
-
-
 }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import io.armcha.arch.BaseMVPFragment
 import io.github.armcha.architecturesampleproject.App
-import io.github.armcha.architecturesampleproject.di.component.ActivityComponent
 import io.github.armcha.architecturesampleproject.di.component.FragmentComponent
 import javax.inject.Inject
 
@@ -15,14 +14,16 @@ abstract class BaseFragment<V : BaseContract.View, P : BaseContract.Presenter<V>
 
     protected abstract val layoutResId: Int
 
-    protected lateinit var fragmentComponent: FragmentComponent
-
-    protected lateinit var activityComponent: ActivityComponent
-
     @Inject
     override lateinit var presenter: P
 
+    protected lateinit var fragmentComponent: FragmentComponent
+
     abstract fun inject()
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(layoutResId, container, false)
+    }
 
     override fun insertStoreObject(): Any? {
         return App.applicationComponent
@@ -36,9 +37,5 @@ abstract class BaseFragment<V : BaseContract.View, P : BaseContract.Presenter<V>
                 .fragmentComponentBuilder()
                 .build()
         inject()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(layoutResId, container, false)
     }
 }

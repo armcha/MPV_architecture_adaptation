@@ -9,17 +9,20 @@ import android.view.View
 abstract class BaseMVPFragment<V : BaseMVPContract.View, out P : BaseMVPContract.Presenter<V>>
     : Fragment(), BaseMVPContract.View, BaseViewModel.ClearCallBack {
 
-    private val factory = BaseViewModelFactory()
-    private lateinit var secondBaseViewModel: BaseViewModel
-    private var storedObject: Any? = null
     protected abstract val presenter: P
+    private lateinit var secondBaseViewModel: BaseViewModel
+    private val factory = BaseViewModelFactory()
+    private var storedObject: Any? = null
+    private var isFirstCreation = false
+
+    abstract fun onStoredObjectReady(storedObject: Any?)
+    abstract fun insertStoreObject(): Any?
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         secondBaseViewModel = ViewModelProviders
                 .of(this, factory)
                 .get(BaseViewModel::class.java)
-        var isFirstCreation = false
         if (!secondBaseViewModel.hasStoredObject()) {
             isFirstCreation = true
             secondBaseViewModel.storeObject(insertStoreObject())
@@ -30,15 +33,14 @@ abstract class BaseMVPFragment<V : BaseMVPContract.View, out P : BaseMVPContract
         onStoredObjectReady(storedObject)
         presenter.attachLifecycle(lifecycle)
         presenter.attachView(this as V)
-        if (isFirstCreation) {
-            presenter.onPresenterCreate()
-        }
     }
 
-    abstract fun onStoredObjectReady(storedObject: Any?)
-
-    override fun onCleared() {
-        presenter.onPresenterDestroy()
+    override fun onResume() {
+        super.onResume()
+        if (isFirstCreation) {
+            presenter.onPresenterCreate()
+            isFirstCreation = false
+        }
     }
 
     override fun onDestroy() {
@@ -48,6 +50,7 @@ abstract class BaseMVPFragment<V : BaseMVPContract.View, out P : BaseMVPContract
         super.onDestroy()
     }
 
-    abstract fun insertStoreObject(): Any?
-
+    override fun onCleared() {
+        presenter.onPresenterDestroy()
+    }
 }

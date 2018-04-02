@@ -1,6 +1,8 @@
 package io.github.armcha.architecturesampleproject.data.repository
 
 import android.util.Log
+import io.github.armcha.architecturesampleproject.data.api.SomeApiService
+import io.github.armcha.architecturesampleproject.data.local.SomeLocalCache
 import io.github.armcha.architecturesampleproject.di.scope.PerScreen
 import io.github.armcha.architecturesampleproject.domain.model.User
 import io.github.armcha.architecturesampleproject.domain.repository.SomeRepository
@@ -10,11 +12,15 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @PerScreen
-class SomeDataRepository @Inject constructor() : SomeRepository {
+class SomeDataRepository @Inject constructor(private val someApiService: SomeApiService,
+                                             private val someLocalCache: SomeLocalCache) : SomeRepository {
 
-    override fun getUser(): Flowable<User> {
-        return Flowable.timer(10, TimeUnit.SECONDS)
-                .map { User("A", "B") }
+    override fun getUser(): Flowable<List<User>> {
+        return if (someLocalCache.hasCachedUsers()) {
+            someLocalCache.getCachedUsers()
+        } else {
+            someApiService.getUsersList()
+        }
     }
 
     override fun saveUser(user: User): Completable {

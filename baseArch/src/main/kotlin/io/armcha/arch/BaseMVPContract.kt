@@ -2,7 +2,6 @@ package io.armcha.arch
 
 
 import android.arch.lifecycle.Lifecycle
-import android.os.Bundle
 
 interface BaseMVPContract {
 
@@ -11,6 +10,8 @@ interface BaseMVPContract {
     interface Presenter<V : View> {
 
         val view: V?
+
+        val innerLifecycle: Lifecycle?
 
         fun attachLifecycle(lifecycle: Lifecycle)
 
