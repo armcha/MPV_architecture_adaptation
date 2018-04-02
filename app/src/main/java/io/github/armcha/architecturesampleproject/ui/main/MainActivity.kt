@@ -12,6 +12,7 @@ import io.github.armcha.architecturesampleproject.R
 import io.github.armcha.architecturesampleproject.domain.model.User
 import io.github.armcha.architecturesampleproject.ui.base.BaseActivity
 import io.github.armcha.architecturesampleproject.ui.fragment.MainFragment
+import io.github.armcha.architecturesampleproject.ui.fragment.SecondFragment
 import io.github.armcha.architecturesampleproject.ui.second.SecondActivity
 import io.github.armcha.architecturesampleproject.ui.util.NonNullObserver
 import kotlinx.android.synthetic.main.activity_main.*
@@ -44,10 +45,10 @@ class MainActivity : BaseActivity<MainActivityContract.View, MainActivityPresent
                 .add(R.id.fragmentContainer, MainFragment())
                 .commit()
 
-//        supportFragmentManager.beginTransaction()
-//                .add(R.id.fragmentContainer, SecondFragment())
-//                .addToBackStack(null)
-//                .commit()
+        supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, SecondFragment())
+                .addToBackStack(null)
+                .commit()
     }
 
     override fun showUsers(userList: List<User>) {

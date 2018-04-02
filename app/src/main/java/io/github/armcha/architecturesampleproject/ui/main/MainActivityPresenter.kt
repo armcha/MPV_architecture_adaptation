@@ -35,7 +35,7 @@ class MainActivityPresenter @Inject constructor(private val someInteractor: Some
     override fun onPresenterCreate() {
         super.onPresenterCreate()
         fetch(someInteractor.getUser(), GET_USER) { liveData.value = it }
-        //view?.openFragment()
+        view?.openFragment()
     }
 
     override fun saveUser(name: String, userName: String) {

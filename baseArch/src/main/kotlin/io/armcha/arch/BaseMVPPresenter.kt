@@ -10,8 +10,8 @@ import android.util.Log
  * Created by Chatikyan on 20.05.2017.
  */
 
-abstract class BaseMVPPresenter<V : BaseMVPContract.View> : LifecycleObserver,
-        BaseMVPContract.Presenter<V>, LifecycleOwner {
+abstract class BaseMVPPresenter<V : BaseMVPContract.View> : LifecycleObserver, LifecycleOwner,
+        BaseMVPContract.Presenter<V> {
 
     override var view: V? = null
 

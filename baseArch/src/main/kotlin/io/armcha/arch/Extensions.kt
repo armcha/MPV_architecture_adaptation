@@ -1,19 +1,52 @@
 package io.armcha.arch
 
-fun `if`(predicate: Boolean?, action: () -> Unit) {
-    if (predicate == true) {
-        action.invoke()
+class Predicate(private val predicate: Boolean) {
+
+    infix fun հակառակԴեպքում(action: () -> Unit): Predicate {
+        if (!predicate)
+            action()
+        return Predicate(predicate)
+    }
+
+    infix fun հակառակԴեպքում(predicate: Predicate) = predicate
+}
+
+fun եթե(predicate: Boolean, action: () -> Unit): Predicate {
+    if (predicate)
+        action()
+    return Predicate(predicate)
+}
+
+
+fun a() {
+
+    val պայման = true
+    val երկրորդՊայման = true
+    val հաջորդՊայման = true
+
+    եթե(պայման) {
+        առաջինՄեթհոդ()
+    } հակառակԴեպքում եթե(երկրորդՊայման) {
+        երկրորդՄեթհոդ()
+    } հակառակԴեպքում եթե(հաջորդՊայման) {
+        երրորդՄեթհոդ()
+    } հակառակԴեպքում {
+        չորրորդՄեթհոդ()
     }
 }
 
-fun եթե(predicate: Boolean, action: () -> Unit): Boolean {
-    if (predicate) {
-        action()
-    }
-    return predicate
+fun առաջինՄեթհոդ() {
+
 }
 
-infix fun Boolean.հակառակԴեպքում(action: () -> Unit) {
-    if (!this)
-        action()
+fun երկրորդՄեթհոդ() {
+
+}
+
+fun երրորդՄեթհոդ() {
+
+}
+
+fun չորրորդՄեթհոդ() {
+
 }
