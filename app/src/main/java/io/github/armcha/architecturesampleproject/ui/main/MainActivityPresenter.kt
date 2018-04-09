@@ -3,9 +3,7 @@ package io.github.armcha.architecturesampleproject.ui.main
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.OnLifecycleEvent
-import android.util.Log
 import io.github.armcha.architecturesampleproject.di.scope.PerScreen
-import io.github.armcha.architecturesampleproject.domain.fetcher.Status
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
 import io.github.armcha.architecturesampleproject.domain.interactor.SecondInteractor
 import io.github.armcha.architecturesampleproject.domain.interactor.SomeInteractor
@@ -23,8 +21,6 @@ class MainActivityPresenter @Inject constructor(private val someInteractor: Some
 
     @OnLifecycleEvent(value = Lifecycle.Event.ON_START)
     fun onStart() {
-        Log.e("GET_USER", "GET_USER: ${fetcher.getRequestStatus(this,GET_USER).javaClass.simpleName}"  )
-        Log.e("SAVE_USER", "SAVE_USER: ${fetcher.getRequestStatus(this,SAVE_USER).javaClass.simpleName}"  )
         liveData.observe(this, NonNullObserver {
             //Log.e("liveData", "$it")
             view?.showUsers(it)
@@ -32,7 +28,7 @@ class MainActivityPresenter @Inject constructor(private val someInteractor: Some
         when {
             GET_USER statusIs LOADING -> view?.showUsersLoading()
             GET_USER statusIs ERROR -> view?.showLoadUserError()
-            //GET_USER statusIs SUCCESS -> view?.showLoadUserError()
+        //GET_USER statusIs SUCCESS -> view?.showLoadUserError()
         }
     }
 
@@ -41,6 +37,9 @@ class MainActivityPresenter @Inject constructor(private val someInteractor: Some
         fetch(someInteractor.getUser(), GET_USER) {
             liveData.value = it
         }
+//        complete({ Thread.sleep(10000) }, GET_USER) {
+//            view?.openFragment()
+//        }
         //view?.openFragment()
     }
 
@@ -64,4 +63,6 @@ class MainActivityPresenter @Inject constructor(private val someInteractor: Some
             else -> TODO() // show some general error
         }
     }
+
+
 }

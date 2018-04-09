@@ -1,6 +1,5 @@
 package io.github.armcha.architecturesampleproject.domain.fetcher
 
-import android.util.Log
 import io.github.armcha.architecturesampleproject.di.qualifier.IoScheduler
 import io.github.armcha.architecturesampleproject.di.qualifier.UIScheduler
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
@@ -24,37 +23,37 @@ class Fetcher @Inject constructor(@IoScheduler
 
     fun <T> fetch(flowable: Flowable<T>, requestType: RequestType,
                   resultListener: ResultListener, success: (T) -> Unit) {
-        createOrGetDisposable(resultListener)?.add(flowable
+        createOrGetDisposable(resultListener).add(flowable
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
                 .doOnSubscribe { resultListener startAndAdd requestType }
-                .subscribe(resultListener.onSuccess<T>(requestType, success),
+                .subscribe(resultListener.onSuccess(requestType, success),
                         resultListener sendErrorFor requestType))
     }
 
     fun <T> fetch(observable: Observable<T>, requestType: RequestType,
                   resultListener: ResultListener, success: (T) -> Unit) {
-        createOrGetDisposable(resultListener)?.add(observable
+        createOrGetDisposable(resultListener).add(observable
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
                 .doOnSubscribe { resultListener startAndAdd requestType }
-                .subscribe(resultListener.onSuccess<T>(requestType, success),
+                .subscribe(resultListener.onSuccess(requestType, success),
                         resultListener sendErrorFor requestType))
     }
 
     fun <T> fetch(single: Single<T>, requestType: RequestType,
                   resultListener: ResultListener, success: (T) -> Unit) {
-        createOrGetDisposable(resultListener)?.add(single
+        createOrGetDisposable(resultListener).add(single
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
                 .doOnSubscribe { resultListener startAndAdd requestType }
-                .subscribe({ resultListener.onSuccess(requestType, success) },
+                .subscribe(resultListener.onSuccess(requestType, success),
                         resultListener sendErrorFor requestType))
     }
 
     fun complete(completable: Completable, requestType: RequestType,
                  resultListener: ResultListener, success: () -> Unit) {
-        createOrGetDisposable(resultListener)?.add(completable
+        createOrGetDisposable(resultListener).add(completable
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
                 .doOnSubscribe { resultListener startAndAdd requestType }
@@ -124,7 +123,7 @@ class Fetcher @Inject constructor(@IoScheduler
         }
     }
 
-    private fun createOrGetDisposable(resultListener: ResultListener): CompositeDisposable? {
+    private fun createOrGetDisposable(resultListener: ResultListener): CompositeDisposable {
         return disposableMap.getOrPut(resultListener.key) {
             CompositeDisposable()
         }

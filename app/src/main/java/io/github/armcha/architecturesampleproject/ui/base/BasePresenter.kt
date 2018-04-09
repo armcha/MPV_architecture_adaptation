@@ -59,7 +59,7 @@ abstract class BasePresenter<V : BaseContract.View>
         fetcher.complete(completable, requestType, this, success)
     }
 
-    protected fun complete(body: () -> Any,
+    protected fun complete(body: () -> Unit,
                            requestType: RequestType = RequestType.TYPE_NONE, success: () -> Unit = {}) {
         fetcher.complete(Completable.fromAction { body() }, requestType, this, success)
     }
