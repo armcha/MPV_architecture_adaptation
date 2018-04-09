@@ -1,9 +1,7 @@
 package io.armcha.arch
 
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.View
 
 abstract class BaseMVPFragment<V : BaseMVPContract.View, out P : BaseMVPContract.Presenter<V>>
@@ -16,6 +14,7 @@ abstract class BaseMVPFragment<V : BaseMVPContract.View, out P : BaseMVPContract
     abstract fun onStoredObjectReady(storedObject: Any?)
     abstract fun insertStoreObject(): Any?
 
+    @Suppress("UNCHECKED_CAST")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         delegate.create(this, this::insertStoreObject)

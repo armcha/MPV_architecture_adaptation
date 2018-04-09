@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.OnLifecycleEvent
 import android.util.Log
 import io.github.armcha.architecturesampleproject.di.scope.PerScreen
+import io.github.armcha.architecturesampleproject.domain.fetcher.Status
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
 import io.github.armcha.architecturesampleproject.domain.interactor.SecondInteractor
 import io.github.armcha.architecturesampleproject.domain.interactor.SomeInteractor
@@ -22,20 +23,25 @@ class MainActivityPresenter @Inject constructor(private val someInteractor: Some
 
     @OnLifecycleEvent(value = Lifecycle.Event.ON_START)
     fun onStart() {
+        Log.e("GET_USER", "GET_USER: ${fetcher.getRequestStatus(this,GET_USER).javaClass.simpleName}"  )
+        Log.e("SAVE_USER", "SAVE_USER: ${fetcher.getRequestStatus(this,SAVE_USER).javaClass.simpleName}"  )
         liveData.observe(this, NonNullObserver {
-            Log.e("liveData", "$it")
+            //Log.e("liveData", "$it")
             view?.showUsers(it)
         })
         when {
             GET_USER statusIs LOADING -> view?.showUsersLoading()
             GET_USER statusIs ERROR -> view?.showLoadUserError()
+            //GET_USER statusIs SUCCESS -> view?.showLoadUserError()
         }
     }
 
     override fun onPresenterCreate() {
         super.onPresenterCreate()
-        fetch(someInteractor.getUser(), GET_USER) { liveData.value = it }
-        view?.openFragment()
+        fetch(someInteractor.getUser(), GET_USER) {
+            liveData.value = it
+        }
+        //view?.openFragment()
     }
 
     override fun saveUser(name: String, userName: String) {

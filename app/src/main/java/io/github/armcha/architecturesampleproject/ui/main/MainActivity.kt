@@ -1,21 +1,17 @@
 package io.github.armcha.architecturesampleproject.ui.main
 
-import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.widget.Toast
-import io.armcha.arch.եթե
-import io.armcha.arch.հակառակԴեպքում
 import io.github.armcha.architecturesampleproject.R
 import io.github.armcha.architecturesampleproject.domain.model.User
 import io.github.armcha.architecturesampleproject.ui.base.BaseActivity
 import io.github.armcha.architecturesampleproject.ui.fragment.MainFragment
-import io.github.armcha.architecturesampleproject.ui.fragment.SecondFragment
 import io.github.armcha.architecturesampleproject.ui.second.SecondActivity
-import io.github.armcha.architecturesampleproject.ui.util.NonNullObserver
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : BaseActivity<MainActivityContract.View, MainActivityPresenter>(),
         MainActivityContract.View {
@@ -45,10 +41,10 @@ class MainActivity : BaseActivity<MainActivityContract.View, MainActivityPresent
                 .add(R.id.fragmentContainer, MainFragment())
                 .commit()
 
-        supportFragmentManager.beginTransaction()
-                .add(R.id.fragmentContainer, SecondFragment())
-                .addToBackStack(null)
-                .commit()
+//        supportFragmentManager.beginTransaction()
+//                .add(R.id.fragmentContainer, SecondFragment())
+//                .addToBackStack(null)
+//                .commit()
     }
 
     override fun showUsers(userList: List<User>) {
@@ -74,6 +70,7 @@ class MainActivity : BaseActivity<MainActivityContract.View, MainActivityPresent
     }
 
     override fun showUsersLoading() {
+        Log.e("TAG", "showUsersLoading: ")
         loadingHandler = Handler()
         load()
     }

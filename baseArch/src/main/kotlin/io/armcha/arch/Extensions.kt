@@ -17,7 +17,6 @@ fun եթե(predicate: Boolean, action: () -> Unit): Predicate {
     return Predicate(predicate)
 }
 
-
 fun a() {
 
     val պայման = true

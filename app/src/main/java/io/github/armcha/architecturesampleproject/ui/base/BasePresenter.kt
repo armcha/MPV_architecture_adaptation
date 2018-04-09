@@ -29,43 +29,38 @@ abstract class BasePresenter<V : BaseContract.View>
     @CallSuper
     override fun onPresenterDestroy() {
         super.onPresenterDestroy()
-        fetcher.clear(this)
+        fetcher clear this
     }
 
-    protected infix fun RequestType.statusIs(status: Status) = fetcher.getRequestStatus(this) == status
+    protected infix fun RequestType.statusIs(status: Status)
+            = fetcher.getRequestStatus(this@BasePresenter, this) == status
 
-    protected fun RequestType.statusIs(vararg status: Status): Boolean {
-        return status.any { fetcher.getRequestStatus(this) == it }
+    protected fun changeRequestStatus(requestType: RequestType, newStatus: Status) {
+        fetcher.changeRequestStatus(this, requestType, newStatus)
     }
 
     protected fun <TYPE> fetch(flowable: Flowable<TYPE>,
-                     requestType: RequestType = RequestType.TYPE_NONE, success: (TYPE) -> Unit) {
+                               requestType: RequestType = RequestType.TYPE_NONE, success: (TYPE) -> Unit) {
         fetcher.fetch(flowable, requestType, this, success)
     }
 
     protected fun <TYPE> fetch(observable: Observable<TYPE>,
-                     requestType: RequestType = RequestType.TYPE_NONE, success: (TYPE) -> Unit) {
+                               requestType: RequestType = RequestType.TYPE_NONE, success: (TYPE) -> Unit) {
         fetcher.fetch(observable, requestType, this, success)
     }
 
     protected fun <TYPE> fetch(single: Single<TYPE>,
-                     requestType: RequestType = RequestType.TYPE_NONE, success: (TYPE) -> Unit) {
+                               requestType: RequestType = RequestType.TYPE_NONE, success: (TYPE) -> Unit) {
         fetcher.fetch(single, requestType, this, success)
     }
 
-    protected fun <TYPE> fetch(single: Single<TYPE>,
-                     requestType: RequestType = RequestType.TYPE_NONE, success: (TYPE) -> Unit,
-                     onError: (Throwable) -> Unit) {
-        fetcher.fetch(single, requestType, this, success, onError)
-    }
-
     protected fun complete(completable: Completable,
-                 requestType: RequestType = RequestType.TYPE_NONE, success: () -> Unit = {}) {
+                           requestType: RequestType = RequestType.TYPE_NONE, success: () -> Unit = {}) {
         fetcher.complete(completable, requestType, this, success)
     }
 
     protected fun complete(body: () -> Any,
-                 requestType: RequestType = RequestType.TYPE_NONE, success: () -> Unit = {}) {
+                           requestType: RequestType = RequestType.TYPE_NONE, success: () -> Unit = {}) {
         fetcher.complete(Completable.fromAction { body() }, requestType, this, success)
     }
 }

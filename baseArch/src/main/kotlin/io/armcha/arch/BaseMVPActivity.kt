@@ -14,6 +14,7 @@ abstract class BaseMVPActivity<V : BaseMVPContract.View, out P : BaseMVPContract
     abstract fun onStoredObjectReady(storedObject: Any?)
     abstract fun insertStoreObject(): Any?
 
+    @Suppress("UNCHECKED_CAST")
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
