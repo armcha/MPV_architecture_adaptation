@@ -18,8 +18,8 @@ abstract class BasePresenter<V : BaseContract.View>
     @Inject
     protected lateinit var fetcher: Fetcher
 
-    protected val GET_USER: RequestType = RequestType.GET_USER
-    protected val SAVE_USER: RequestType = RequestType.SAVE_USER
+    protected val GET_USER = RequestType.GET_USER
+    protected val SAVE_USER = RequestType.SAVE_USER
 
     protected val LOADING = Status.Loading
     protected val EMPTY_SUCCESS = Status.EmptySuccess
@@ -31,6 +31,9 @@ abstract class BasePresenter<V : BaseContract.View>
         super.onPresenterDestroy()
         fetcher clear this
     }
+
+    protected fun RequestType.currentStatus()
+            = fetcher.getRequestStatus(this@BasePresenter, this)
 
     protected infix fun RequestType.statusIs(status: Status)
             = fetcher.getRequestStatus(this@BasePresenter, this) == status

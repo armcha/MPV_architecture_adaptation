@@ -66,7 +66,7 @@ class Fetcher @Inject constructor(@IoScheduler
     fun changeRequestStatus(resultListener: ResultListener, requestType: RequestType, status: Status) {
         val key = resultListener.key
         if (requestMap.containsKey(key)) {
-            val currentRequest = requestMap[key]!!
+            val currentRequest = requestMap[key]!! //FIXME
             currentRequest[requestType] = status
             requestMap.replace(key, currentRequest)
         }
@@ -74,11 +74,7 @@ class Fetcher @Inject constructor(@IoScheduler
 
     fun getRequestStatus(resultListener: ResultListener, requestType: RequestType): Status {
         val currentRequest = requestMap[resultListener.key]
-        return if (currentRequest?.containsKey(requestType) == true) {
-            currentRequest[requestType]!!
-        } else {
-            Status.Idle
-        }
+        return currentRequest?.get(requestType) ?: Status.Idle
     }
 
     infix fun clear(resultListener: ResultListener) {
