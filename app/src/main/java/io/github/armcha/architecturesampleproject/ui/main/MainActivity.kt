@@ -52,9 +52,7 @@ class MainActivity : BaseActivity<MainActivityContract.View, MainActivityPresent
         runnable = null
         userStatus.text = null
         loading.text = null
-        userList.forEach {
-            userStatus.append("$it\n")
-        }
+        userList.map{ "$it\n" }.forEach(userStatus::append)
     }
 
     override fun showLoadUserError() {

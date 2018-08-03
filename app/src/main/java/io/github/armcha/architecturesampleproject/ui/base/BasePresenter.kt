@@ -32,8 +32,12 @@ abstract class BasePresenter<V : BaseContract.View>
         fetcher clear this
     }
 
-    protected fun RequestType.currentStatus()
-            = fetcher.getRequestStatus(this@BasePresenter, this)
+    @JvmName("fetchWithKey")
+    protected fun <T> Flowable<T>.fetch(requestType: RequestType = RequestType.TYPE_NONE, success: (T) -> Unit) {
+        fetch(this, requestType, success)
+    }
+
+    protected fun RequestType.currentStatus() = fetcher.getRequestStatus(this@BasePresenter, this)
 
     protected infix fun RequestType.statusIs(status: Status)
             = fetcher.getRequestStatus(this@BasePresenter, this) == status

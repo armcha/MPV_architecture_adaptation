@@ -7,9 +7,11 @@ interface SecondContract {
 
     interface View : BaseContract.View {
 
+
     }
 
     interface Presenter : BaseContract.Presenter<View> {
+
 
     }
 }

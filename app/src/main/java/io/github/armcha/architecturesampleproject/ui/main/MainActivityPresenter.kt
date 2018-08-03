@@ -12,6 +12,7 @@ import io.github.armcha.architecturesampleproject.domain.model.User
 import io.github.armcha.architecturesampleproject.ui.base.BasePresenter
 import io.github.armcha.architecturesampleproject.ui.util.NonNullObserver
 import javax.inject.Inject
+import kotlin.reflect.KFunction1
 
 @PerScreen
 class MainActivityPresenter @Inject constructor(private val someInteractor: SomeInteractor,
@@ -25,25 +26,24 @@ class MainActivityPresenter @Inject constructor(private val someInteractor: Some
         Log.e("GET_USER", "STATUS IS ${GET_USER.currentStatus().javaClass.simpleName}")
         Log.e("SAVE_USER", "STATUS IS ${SAVE_USER.currentStatus().javaClass.simpleName}")
         liveData.observe(this, NonNullObserver {
-            //Log.e("liveData", "$it")
             view?.showUsers(it)
         })
         when {
             GET_USER statusIs LOADING -> view?.showUsersLoading()
             GET_USER statusIs ERROR -> view?.showLoadUserError()
-          //GET_USER statusIs SUCCESS -> view?.showLoadUserError()
         }
     }
 
     override fun onPresenterCreate() {
         super.onPresenterCreate()
-        fetch(someInteractor.getUser(), GET_USER) {
-            liveData.value = it
-        }
-//        complete({ Thread.sleep(10000) }, GET_USER) {
-//            view?.openFragment()
-//        }
-        //view?.openFragment()
+        fetch(someInteractor.getUser(), GET_USER, liveData::setValue)
+//      someInteractor.getUser().fetch(GET_USER){
+//
+//      }
+//      complete({ Thread.sleep(10000) }, GET_USER) {
+//          view?.openFragment()
+//      }
+//      view?.openFragment()
     }
 
     override fun saveUser(name: String, userName: String) {
@@ -66,6 +66,4 @@ class MainActivityPresenter @Inject constructor(private val someInteractor: Some
             else -> TODO() // show some general error
         }
     }
-
-
 }
