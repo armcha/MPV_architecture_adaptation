@@ -24,7 +24,7 @@ class SomeDataRepository @Inject constructor(private val someApiService: SomeApi
     }
 
     override fun saveUser(user: User): Completable {
-        return Completable.timer(10, TimeUnit.SECONDS)
+        return Completable.timer(5, TimeUnit.SECONDS)
                 .doOnComplete {
                     Log.d("USER", "USER SAVED ${user.name}")
                 }

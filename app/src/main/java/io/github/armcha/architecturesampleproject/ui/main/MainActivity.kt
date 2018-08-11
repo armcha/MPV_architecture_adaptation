@@ -9,6 +9,7 @@ import io.github.armcha.architecturesampleproject.R
 import io.github.armcha.architecturesampleproject.domain.model.User
 import io.github.armcha.architecturesampleproject.ui.base.BaseActivity
 import io.github.armcha.architecturesampleproject.ui.fragment.MainFragment
+import io.github.armcha.architecturesampleproject.ui.fragment.SecondFragment
 import io.github.armcha.architecturesampleproject.ui.second.SecondActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -29,22 +30,18 @@ class MainActivity : BaseActivity<MainActivityContract.View, MainActivityPresent
         secondButton.setOnClickListener {
             startActivity(Intent(this, SecondActivity::class.java))
         }
+        openFragmentButton.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                    .add(R.id.fragmentContainer, MainFragment())
+                    .addToBackStack(MainFragment::class.java.simpleName)
+                    .commit()
+        }
+        Log.e("MainActivity", "MainActivity ${presenter.hashCode()}")
     }
 
     override fun onDestroy() {
         super.onDestroy()
         loadingHandler?.removeCallbacks(runnable)
-    }
-
-    override fun openFragment() {
-        supportFragmentManager.beginTransaction()
-                .add(R.id.fragmentContainer, MainFragment())
-                .commit()
-
-//        supportFragmentManager.beginTransaction()
-//                .add(R.id.fragmentContainer, SecondFragment())
-//                .addToBackStack(null)
-//                .commit()
     }
 
     override fun showUsers(userList: List<User>) {

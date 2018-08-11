@@ -49,6 +49,6 @@ class ViewModelDelegate {
             viewModel.storeObject(insertStoreObject())
         }
         storedObject = viewModel.storedObject
-        Log.e("onCreate", "storedObject hashcode ${storedObject?.hashCode()}")
+        Log.e("storedObject", "${storedObject!!::class.java.simpleName} hashcode ${storedObject?.hashCode()}")
     }
 }

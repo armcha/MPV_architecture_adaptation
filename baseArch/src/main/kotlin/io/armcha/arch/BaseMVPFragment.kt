@@ -2,6 +2,7 @@ package io.armcha.arch
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.View
 
 abstract class BaseMVPFragment<V : BaseMVPContract.View, out P : BaseMVPContract.Presenter<V>>
@@ -29,10 +30,10 @@ abstract class BaseMVPFragment<V : BaseMVPContract.View, out P : BaseMVPContract
     }
 
     override fun onDestroy() {
-        delegate.onDestroy()
         presenter.detachLifecycle(lifecycle)
         presenter.detachView()
         super.onDestroy()
+        delegate.onDestroy()
     }
 
     final override fun onCleared() {

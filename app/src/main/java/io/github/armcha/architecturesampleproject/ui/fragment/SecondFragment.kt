@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class SecondFragment : BaseFragment<SecondFragmentContract.View, SecondFragmentContract.Presenter>(), SecondFragmentContract.View {
 
-    override val layoutResId = R.layout.fragment_main
+    override val layoutResId = R.layout.second_fragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

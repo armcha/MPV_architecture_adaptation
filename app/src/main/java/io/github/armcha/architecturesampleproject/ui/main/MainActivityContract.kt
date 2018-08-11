@@ -10,8 +10,6 @@ interface MainActivityContract {
 
         fun showUsers(userList: List<User>)
 
-        fun openFragment()
-
         fun showUserSaved()
 
         fun showUsersLoading()

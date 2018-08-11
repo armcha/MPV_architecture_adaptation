@@ -10,7 +10,6 @@ import javax.inject.Inject
 abstract class BaseActivity<V : BaseContract.View, P : BaseContract.Presenter<V>>
     : BaseMVPActivity<V, P>(), BaseContract.View {
 
-
     @Inject
     override lateinit var presenter: P
 
