@@ -4,5 +4,6 @@ enum class RequestType {
 
     TYPE_NONE,
     GET_USER,
-    SAVE_USER
+    SAVE_USER,
+    GET_EVENTS
 }

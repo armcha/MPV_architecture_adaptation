@@ -5,9 +5,9 @@ import android.support.v7.app.AppCompatActivity
 import dagger.BindsInstance
 import dagger.Subcomponent
 import io.github.armcha.architecturesampleproject.di.module.ActivityModule
-import io.github.armcha.architecturesampleproject.di.module.PresenterModule
 import io.github.armcha.architecturesampleproject.di.scope.PerActivity
 import io.github.armcha.architecturesampleproject.ui.main.MainActivity
+import io.github.armcha.architecturesampleproject.ui.presenter_with_livedata.ThirdActivity
 import io.github.armcha.architecturesampleproject.ui.second.SecondActivity
 
 @PerActivity
@@ -28,4 +28,6 @@ interface ActivityComponent {
     fun inject(mainActivity: MainActivity)
 
     fun inject(secondActivity: SecondActivity)
+
+    fun inject(thirdActivity: ThirdActivity)
 }

@@ -20,11 +20,7 @@ abstract class BasePresenter<V : BaseContract.View>
 
     protected val GET_USER = RequestType.GET_USER
     protected val SAVE_USER = RequestType.SAVE_USER
-
-    protected val LOADING = Status.Loading
-    protected val EMPTY_SUCCESS = Status.EmptySuccess
-    protected val ERROR = Status.Error
-    protected val SUCCESS = Status.Success
+    protected val GET_EVENTS = RequestType.GET_EVENTS
 
     @CallSuper
     override fun onPresenterDestroy() {
@@ -37,10 +33,20 @@ abstract class BasePresenter<V : BaseContract.View>
         fetch(this, requestType, success)
     }
 
+    @JvmName("fetchWithKey")
+    protected fun <T> Observable<T>.fetch(requestType: RequestType = RequestType.TYPE_NONE, success: (T) -> Unit) {
+        fetch(this, requestType, success)
+    }
+
+    @Deprecated("Replace with status", ReplaceWith("status"), DeprecationLevel.WARNING)
     protected fun RequestType.currentStatus() = fetcher.getRequestStatus(this@BasePresenter, this)
 
-    protected infix fun RequestType.statusIs(status: Status)
-            = fetcher.getRequestStatus(this@BasePresenter, this) == status
+    protected val RequestType.status: Status
+        get() {
+            return fetcher.getRequestStatus(this@BasePresenter, this)
+        }
+
+    protected infix fun RequestType.statusIs(status: Status) = fetcher.getRequestStatus(this@BasePresenter, this) == status
 
     protected fun changeRequestStatus(requestType: RequestType, newStatus: Status) {
         fetcher.changeRequestStatus(this, requestType, newStatus)

@@ -9,7 +9,6 @@ import io.github.armcha.architecturesampleproject.R
 import io.github.armcha.architecturesampleproject.domain.model.User
 import io.github.armcha.architecturesampleproject.ui.base.BaseActivity
 import io.github.armcha.architecturesampleproject.ui.fragment.MainFragment
-import io.github.armcha.architecturesampleproject.ui.fragment.SecondFragment
 import io.github.armcha.architecturesampleproject.ui.second.SecondActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -49,7 +48,7 @@ class MainActivity : BaseActivity<MainActivityContract.View, MainActivityPresent
         runnable = null
         userStatus.text = null
         loading.text = null
-        userList.map{ "$it\n" }.forEach(userStatus::append)
+        userList.map { "$it\n" }.forEach(userStatus::append)
     }
 
     override fun showLoadUserError() {

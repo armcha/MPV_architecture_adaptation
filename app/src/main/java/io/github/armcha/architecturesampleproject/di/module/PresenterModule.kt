@@ -10,6 +10,9 @@ import io.github.armcha.architecturesampleproject.ui.fragment.SecondFragmentCont
 import io.github.armcha.architecturesampleproject.ui.fragment.SecondFragmentPresenter
 import io.github.armcha.architecturesampleproject.ui.main.MainActivityContract
 import io.github.armcha.architecturesampleproject.ui.main.MainActivityPresenter
+import io.github.armcha.architecturesampleproject.ui.presenter_with_livedata.ThirdActivity
+import io.github.armcha.architecturesampleproject.ui.presenter_with_livedata.ThirdActivityContract
+import io.github.armcha.architecturesampleproject.ui.presenter_with_livedata.ThirdActivityPresenter
 import io.github.armcha.architecturesampleproject.ui.second.SecondContract
 import io.github.armcha.architecturesampleproject.ui.second.SecondPresenter
 
@@ -27,5 +30,8 @@ abstract class PresenterModule {
 
     @Binds
     abstract fun bindSecondFragmentPresenter(secondFragmentPresenter: SecondFragmentPresenter): SecondFragmentContract.Presenter
+
+    @Binds
+    abstract fun bindThirdActivityPresenter(thirdActivityPresenter: ThirdActivityPresenter): ThirdActivityContract.Presenter
 
 }
