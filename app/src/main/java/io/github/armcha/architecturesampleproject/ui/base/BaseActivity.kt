@@ -4,7 +4,6 @@ import io.armcha.arch.BaseMVPActivity
 import io.github.armcha.architecturesampleproject.App
 import io.github.armcha.architecturesampleproject.di.component.ActivityComponent
 import io.github.armcha.architecturesampleproject.di.component.ScreenComponent
-import io.github.armcha.architecturesampleproject.ui.second.SecondContract
 import javax.inject.Inject
 
 abstract class BaseActivity<V : BaseContract.View, P : BaseContract.Presenter<V>>

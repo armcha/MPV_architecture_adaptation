@@ -4,11 +4,13 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import io.github.armcha.architecturesampleproject.data.repository.EventDataRepository
+import io.github.armcha.architecturesampleproject.data.repository.PhoneDataRepository
 import io.github.armcha.architecturesampleproject.data.repository.SecondDataRepository
 import io.github.armcha.architecturesampleproject.data.repository.SomeDataRepository
 import io.github.armcha.architecturesampleproject.di.component.ActivityComponent
 import io.github.armcha.architecturesampleproject.di.scope.PerScreen
 import io.github.armcha.architecturesampleproject.domain.repository.EventRepository
+import io.github.armcha.architecturesampleproject.domain.repository.PhoneRepository
 import io.github.armcha.architecturesampleproject.domain.repository.SecondRepository
 import io.github.armcha.architecturesampleproject.domain.repository.SomeRepository
 
@@ -23,4 +25,7 @@ abstract class ScreenModule {
 
     @Binds
     abstract fun bindEventRepository(eventDataRepository: EventDataRepository): EventRepository
+
+    @Binds
+    abstract fun bindPhoneRepository(PhoneDataRepository: PhoneDataRepository): PhoneRepository
 }

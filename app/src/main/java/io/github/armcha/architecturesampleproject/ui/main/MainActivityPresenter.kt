@@ -32,7 +32,10 @@ class MainActivityPresenter @Inject constructor(private val someInteractor: Some
 
     override fun onPresenterCreate() {
         super.onPresenterCreate()
-        fetch(someInteractor.getUser(), GET_USER) { users = it }
+        fetch(someInteractor.getUser(), GET_USER) {
+            users = it
+            view?.showUsers(users)
+        }
     }
 
     override fun saveUser(name: String, userName: String) {

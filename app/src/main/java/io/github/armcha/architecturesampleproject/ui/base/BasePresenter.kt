@@ -2,7 +2,8 @@ package io.github.armcha.architecturesampleproject.ui.base
 
 import android.support.annotation.CallSuper
 import io.armcha.arch.BaseMVPPresenter
-import io.github.armcha.architecturesampleproject.domain.fetcher.Fetcher
+import io.github.armcha.architecturesampleproject.domain.fetcher.CoroutineFetcher
+import io.github.armcha.architecturesampleproject.domain.fetcher.RxFetcher
 import io.github.armcha.architecturesampleproject.domain.fetcher.Status
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.ResultListener
@@ -16,7 +17,7 @@ abstract class BasePresenter<V : BaseContract.View>
     : BaseMVPPresenter<V>(), BaseContract.Presenter<V>, ResultListener {
 
     @Inject
-    protected lateinit var fetcher: Fetcher
+    protected lateinit var rxFetcher: RxFetcher
 
     protected val GET_USER = RequestType.GET_USER
     protected val SAVE_USER = RequestType.SAVE_USER
@@ -25,7 +26,7 @@ abstract class BasePresenter<V : BaseContract.View>
     @CallSuper
     override fun onPresenterDestroy() {
         super.onPresenterDestroy()
-        fetcher clear this
+        rxFetcher clear this
     }
 
     @JvmName("fetchWithKey")
@@ -39,41 +40,41 @@ abstract class BasePresenter<V : BaseContract.View>
     }
 
     @Deprecated("Replace with status", ReplaceWith("status"), DeprecationLevel.WARNING)
-    protected fun RequestType.currentStatus() = fetcher.getRequestStatus(this@BasePresenter, this)
+    protected fun RequestType.currentStatus() = rxFetcher.getRequestStatus(this@BasePresenter, this)
 
     protected val RequestType.status: Status
         get() {
-            return fetcher.getRequestStatus(this@BasePresenter, this)
+            return rxFetcher.getRequestStatus(this@BasePresenter, this)
         }
 
-    protected infix fun RequestType.statusIs(status: Status) = fetcher.getRequestStatus(this@BasePresenter, this) == status
+    protected infix fun RequestType.statusIs(status: Status) = rxFetcher.getRequestStatus(this@BasePresenter, this) == status
 
     protected fun changeRequestStatus(requestType: RequestType, newStatus: Status) {
-        fetcher.changeRequestStatus(this, requestType, newStatus)
+        rxFetcher.changeRequestStatus(this, requestType, newStatus)
     }
 
     protected fun <TYPE> fetch(flowable: Flowable<TYPE>,
                                requestType: RequestType = RequestType.TYPE_NONE, success: (TYPE) -> Unit) {
-        fetcher.fetch(flowable, requestType, this, success)
+        rxFetcher.fetch(flowable, requestType, this, success)
     }
 
     protected fun <TYPE> fetch(observable: Observable<TYPE>,
                                requestType: RequestType = RequestType.TYPE_NONE, success: (TYPE) -> Unit) {
-        fetcher.fetch(observable, requestType, this, success)
+        rxFetcher.fetch(observable, requestType, this, success)
     }
 
     protected fun <TYPE> fetch(single: Single<TYPE>,
                                requestType: RequestType = RequestType.TYPE_NONE, success: (TYPE) -> Unit) {
-        fetcher.fetch(single, requestType, this, success)
+        rxFetcher.fetch(single, requestType, this, success)
     }
 
     protected fun complete(completable: Completable,
                            requestType: RequestType = RequestType.TYPE_NONE, success: () -> Unit = {}) {
-        fetcher.complete(completable, requestType, this, success)
+        rxFetcher.complete(completable, requestType, this, success)
     }
 
     protected fun complete(body: () -> Unit,
                            requestType: RequestType = RequestType.TYPE_NONE, success: () -> Unit = {}) {
-        fetcher.complete(Completable.fromAction { body() }, requestType, this, success)
+        rxFetcher.complete(Completable.fromAction { body() }, requestType, this, success)
     }
 }

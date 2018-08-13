@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import io.github.armcha.architecturesampleproject.di.component.ActivityComponent
 import io.github.armcha.architecturesampleproject.di.scope.PerScreen
+import io.github.armcha.architecturesampleproject.ui.coroutine_presenter.CoroutineActivityContract
+import io.github.armcha.architecturesampleproject.ui.coroutine_presenter.CoroutineActivityPresenter
 import io.github.armcha.architecturesampleproject.ui.fragment.MainFragmentContract
 import io.github.armcha.architecturesampleproject.ui.fragment.MainFragmentPresenter
 import io.github.armcha.architecturesampleproject.ui.fragment.SecondFragmentContract
@@ -33,5 +35,8 @@ abstract class PresenterModule {
 
     @Binds
     abstract fun bindThirdActivityPresenter(thirdActivityPresenter: ThirdActivityPresenter): ThirdActivityContract.Presenter
+
+    @Binds
+    abstract fun bindCoroutineActivityPresenter(coroutineActivityPresenter: CoroutineActivityPresenter): CoroutineActivityContract.Presenter
 
 }

@@ -11,15 +11,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.main.MainActivity">
+
+        </activity>
+        <activity android:name=".ui.second.SecondActivity" />
+        <activity android:name=".ui.presenter_with_livedata.ThirdActivity">
+
+        </activity>
+        <activity android:name=".ui.coroutine_presenter.CoroutineActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".ui.second.SecondActivity" />
-        <activity android:name=".ui.presenter_with_livedata.ThirdActivity">
-
         </activity>
 
     </application>

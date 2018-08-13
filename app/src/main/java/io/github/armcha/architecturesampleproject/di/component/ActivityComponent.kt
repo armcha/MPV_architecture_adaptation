@@ -6,6 +6,7 @@ import dagger.BindsInstance
 import dagger.Subcomponent
 import io.github.armcha.architecturesampleproject.di.module.ActivityModule
 import io.github.armcha.architecturesampleproject.di.scope.PerActivity
+import io.github.armcha.architecturesampleproject.ui.coroutine_presenter.CoroutineActivity
 import io.github.armcha.architecturesampleproject.ui.main.MainActivity
 import io.github.armcha.architecturesampleproject.ui.presenter_with_livedata.ThirdActivity
 import io.github.armcha.architecturesampleproject.ui.second.SecondActivity
@@ -30,4 +31,6 @@ interface ActivityComponent {
     fun inject(secondActivity: SecondActivity)
 
     fun inject(thirdActivity: ThirdActivity)
+
+    fun inject(coroutineActivity: CoroutineActivity)
 }

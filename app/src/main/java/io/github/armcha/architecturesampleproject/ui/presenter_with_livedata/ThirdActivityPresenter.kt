@@ -7,6 +7,7 @@ import android.util.Log
 import io.github.armcha.architecturesampleproject.di.scope.PerScreen
 import io.github.armcha.architecturesampleproject.domain.fetcher.Status
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
+import io.github.armcha.architecturesampleproject.domain.interactor.EventInteractor
 import io.github.armcha.architecturesampleproject.domain.model.Event
 import io.github.armcha.architecturesampleproject.domain.repository.EventRepository
 import io.github.armcha.architecturesampleproject.ui.base.BasePresenter
@@ -14,7 +15,7 @@ import io.github.armcha.architecturesampleproject.ui.util.NonNullObserver
 import javax.inject.Inject
 
 @PerScreen
-class ThirdActivityPresenter @Inject constructor(private val eventRepository: EventRepository)
+class ThirdActivityPresenter @Inject constructor(private val eventInteractor: EventInteractor)
     : BasePresenter<ThirdActivityContract.View>(), ThirdActivityContract.Presenter {
 
     private val liveData = MutableLiveData<List<Event>>()
@@ -34,7 +35,7 @@ class ThirdActivityPresenter @Inject constructor(private val eventRepository: Ev
 
     override fun onPresenterCreate() {
         super.onPresenterCreate()
-        eventRepository.getDummyEvents().fetch(GET_EVENTS, liveData::setValue)
+        eventInteractor.getEvents().fetch(GET_EVENTS, liveData::setValue)
     }
 
     override fun onRequestError(requestType: RequestType, throwable: Throwable) {

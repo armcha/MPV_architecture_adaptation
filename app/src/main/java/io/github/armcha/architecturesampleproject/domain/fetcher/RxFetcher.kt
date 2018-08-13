@@ -11,9 +11,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class Fetcher @Inject constructor(@IoScheduler
+class RxFetcher @Inject constructor(@IoScheduler
                                   private val ioScheduler: Scheduler,
-                                  @UIScheduler
+                                    @UIScheduler
                                   private val uiScheduler: Scheduler) {
 
     private val disposableMap = ConcurrentHashMap<String, CompositeDisposable>()
