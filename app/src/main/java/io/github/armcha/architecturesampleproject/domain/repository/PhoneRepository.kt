@@ -8,4 +8,6 @@ interface PhoneRepository {
     fun getDummyPhones(): Deferred<List<Phone>>
 
     suspend fun saveDummyData()
+
+    suspend fun doSomeHeavyWork(): String
 }

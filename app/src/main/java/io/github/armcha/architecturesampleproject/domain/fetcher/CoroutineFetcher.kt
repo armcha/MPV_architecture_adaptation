@@ -1,5 +1,6 @@
 package io.github.armcha.architecturesampleproject.domain.fetcher
 
+import android.util.Log
 import io.github.armcha.architecturesampleproject.di.qualifier.BgContext
 import io.github.armcha.architecturesampleproject.di.qualifier.UIContext
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
@@ -8,7 +9,6 @@ import kotlinx.coroutines.experimental.*
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
-
 
 /**
  *
@@ -22,7 +22,6 @@ class CoroutineFetcher @Inject constructor(@BgContext
                                            @UIContext
                                            private val uiContext: CoroutineDispatcher) {
 
-
     private val jobMap = ConcurrentHashMap<String, MutableList<Job>>()
     private val requestMap = ConcurrentHashMap<String, ConcurrentHashMap<RequestType, Status>>()
 
@@ -31,40 +30,60 @@ class CoroutineFetcher @Inject constructor(@BgContext
 
     fun <T> fetch(deferred: Deferred<T>, requestType: RequestType,
                   resultListener: ResultListener, success: (T) -> Unit) {
-        createOrGetJob(resultListener).add(launch(uiContext) {
-            resultListener startAndAdd requestType
-            try {
-                val result = withContext(bgContext) { deferred.await() }
+        createOrGetJobList(resultListener).add(launch(uiContext) {
+            resultListener add requestType
+            withContext(bgContext) { deferred.join() }
+            if (!deferred.isCompletedExceptionally) {
+                val result = deferred.getCompleted()
                 resultListener.onSuccess(requestType, result, success)
-            } catch (exception: Exception) {
-                resultListener sendErrorFor requestType
+            } else {
+                val throwable = deferred.getCompletionExceptionOrNull()
+                        ?: deferred.getCancellationException()
+                resultListener.sendErrorFor(requestType, throwable)
             }
         })
     }
 
-    fun <T> fetch(body:suspend () -> T, requestType: RequestType,
+    fun <T> fetch(body: suspend () -> T, requestType: RequestType,
                   resultListener: ResultListener, success: (T) -> Unit) {
-        createOrGetJob(resultListener).add(launch(uiContext) {
-            resultListener startAndAdd requestType
-            try {
-                val result = withContext(bgContext) { body() }
-                resultListener.onSuccess(requestType, result, success)
-            } catch (exception: Exception) {
-                resultListener sendErrorFor requestType
-            }
+        val exceptionHandler = resultListener exceptionHandlerFor requestType
+        createOrGetJobList(resultListener).add(launch(uiContext + exceptionHandler) {
+            resultListener add requestType
+            val result = withContext(bgContext) { body() }
+            resultListener.onSuccess(requestType, result, success)
         })
     }
 
     fun complete(body: suspend () -> Unit, requestType: RequestType,
                  resultListener: ResultListener, success: () -> Unit) {
-        createOrGetJob(resultListener).add(launch(uiContext) {
-            resultListener startAndAdd requestType
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            resultListener.sendErrorFor(requestType, throwable)
+        }
+        createOrGetJobList(resultListener).add(launch(uiContext + exceptionHandler) {
+            resultListener add requestType
+            withContext(bgContext) { body() }
+            changeRequestStatus(resultListener, requestType, Status.Success)
+            success()
+        })
+    }
+
+    // TODO
+    fun completeCompletableDeferred(deferred: CompletableDeferred<Unit>, requestType: RequestType,
+                                    resultListener: ResultListener, success: () -> Unit) {
+
+        CompletableDeferred(Unit)
+
+        createOrGetJobList(resultListener).add(launch(uiContext) {
+            resultListener add requestType
             try {
-                withContext(bgContext) { body() }
+                withContext(bgContext) {
+                    deferred.await()
+                    deferred.complete(Unit)
+                }
                 changeRequestStatus(resultListener, requestType, Status.Success)
                 success()
             } catch (exception: Exception) {
-                resultListener sendErrorFor requestType
+                resultListener.sendErrorFor(requestType, exception)
             }
         })
     }
@@ -79,21 +98,8 @@ class CoroutineFetcher @Inject constructor(@BgContext
         success(result)
     }
 
-    suspend fun <T> Deferred<T>.awaitSafe(): T? {
-        var result: T? = null
-        try {
-            result = await()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        return result
-    }
-
-    private fun createOrGetJob(resultListener: ResultListener): MutableList<Job> {
-        return jobMap.getOrPut(resultListener.key) {
-            mutableListOf()
-        }
+    private fun createOrGetJobList(resultListener: ResultListener): MutableList<Job> {
+        return jobMap.getOrPut(resultListener.key) { mutableListOf() }
     }
 
     infix fun clear(resultListener: ResultListener) {
@@ -103,26 +109,18 @@ class CoroutineFetcher @Inject constructor(@BgContext
                 val list = this[key]
                 list?.forEach {
                     it.cancel()
+                    Log.e("clear ", "Clearing $it")
+                    Log.e("clear ", "isCancelled ${it.isCancelled}")
+                    Log.e("clear ", "isActive ${it.isActive}")
+                    Log.e("clear ", "isCompleted ${it.isCompleted}")
+                    //Log.e("clear ", "Clearing ${it}")
                 }
-                list?.clear()
+                        ?.also { clear() }
                 remove(key)
             }
         }
         requestMap.remove(key)
     }
-
-//    fun complete(deferred: Deferred<T>, requestType: RequestType,
-//                 resultListener: ResultListener, success: () -> Unit) {
-//
-//        createOrGetDisposable(resultListener).add(completable
-//                .subscribeOn(ioScheduler)
-//                .observeOn(uiScheduler)
-//                .doOnSubscribe { resultListener startAndAdd requestType }
-//                .subscribe({
-//                    changeRequestStatus(resultListener, requestType, Status.Success)
-//                    success()
-//                }, resultListener sendErrorFor requestType))
-//    }
 
     fun changeRequestStatus(resultListener: ResultListener, requestType: RequestType, status: Status) {
         val key = resultListener.key
@@ -138,7 +136,13 @@ class CoroutineFetcher @Inject constructor(@BgContext
         return currentRequest?.get(requestType) ?: Status.Idle
     }
 
-    private infix fun ResultListener.startAndAdd(requestType: RequestType) {
+    private infix fun ResultListener.exceptionHandlerFor(requestType: RequestType): CoroutineExceptionHandler {
+        return CoroutineExceptionHandler { _, throwable ->
+            sendErrorFor(requestType, throwable)
+        }
+    }
+
+    private infix fun ResultListener.add(requestType: RequestType) {
         onRequestStart(requestType)
         if (requestType != RequestType.TYPE_NONE) {
             if (requestMap.containsKey(key)) {
@@ -150,11 +154,9 @@ class CoroutineFetcher @Inject constructor(@BgContext
         }
     }
 
-    private infix fun ResultListener.sendErrorFor(requestType: RequestType): (Throwable) -> Unit {
-        return {
-            changeRequestStatus(this, requestType, Status.Error)
-            onRequestError(requestType, it)
-        }
+    private fun ResultListener.sendErrorFor(requestType: RequestType, throwable: Throwable) {
+        changeRequestStatus(this, requestType, Status.Error)
+        onRequestError(requestType, throwable)
     }
 
     private fun <K, V> concurrentMapOf(vararg pair: Pair<K, V>): ConcurrentHashMap<K, V> {

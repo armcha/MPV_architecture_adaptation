@@ -11,8 +11,9 @@ class PhoneInteractor @Inject constructor(private val phoneRepository: PhoneRepo
 
     fun getPhones(): Deferred<List<Phone>> = phoneRepository.getDummyPhones()
 
-    suspend fun saveDummyData(){
+    suspend fun saveDummyData() {
         phoneRepository.saveDummyData()
     }
 
+    suspend fun doSomeHeavyWorkWithResult() = phoneRepository.doSomeHeavyWork()
 }

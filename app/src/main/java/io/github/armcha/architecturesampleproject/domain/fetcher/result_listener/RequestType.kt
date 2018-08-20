@@ -6,5 +6,7 @@ enum class RequestType {
     GET_USER,
     SAVE_USER,
     GET_EVENTS,
-    GET_PHONES
+    GET_PHONES,
+    HEAVY_WORK_WITH_RESULT,
+    SAVE_DUMMY_DATA
 }

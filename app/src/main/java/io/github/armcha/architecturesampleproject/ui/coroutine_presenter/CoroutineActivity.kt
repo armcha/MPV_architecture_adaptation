@@ -24,7 +24,7 @@ class CoroutineActivity : BaseActivity<CoroutineActivityContract.View, Coroutine
     }
 
     override fun showPhonesLoadError() {
-        Log.e("showPhonesLoadError", "showPhonesLoadError")
+        //Log.e("showPhonesLoadError", "showPhonesLoadError")
     }
 
     override fun inject() {

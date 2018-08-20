@@ -9,7 +9,6 @@ import io.github.armcha.architecturesampleproject.domain.fetcher.Status
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
 import io.github.armcha.architecturesampleproject.domain.interactor.PhoneInteractor
 import io.github.armcha.architecturesampleproject.domain.model.Phone
-import io.github.armcha.architecturesampleproject.domain.repository.PhoneRepository
 import io.github.armcha.architecturesampleproject.ui.base.CoroutineBasePresenter
 import io.github.armcha.architecturesampleproject.ui.util.NonNullObserver
 import javax.inject.Inject
@@ -22,7 +21,9 @@ class CoroutineActivityPresenter @Inject constructor(private val phoneInteractor
 
     @OnLifecycleEvent(value = Lifecycle.Event.ON_START)
     fun onStart() {
-        Log.e("GET_EVENTS", "STATUS IS ${RequestType.GET_PHONES.status.javaClass.simpleName}")
+        Log.e("GET_PHONES", "STATUS IS ${RequestType.GET_PHONES.status.javaClass.simpleName}")
+        Log.e("HEAVY_WORK_WITH_RESULT", "STATUS IS ${RequestType.HEAVY_WORK_WITH_RESULT.status.javaClass.simpleName}")
+        Log.e("SAVE_DUMMY_DATA", "STATUS IS ${RequestType.SAVE_DUMMY_DATA.status.javaClass.simpleName}")
         when (RequestType.GET_PHONES.status) {
             is Status.Loading -> view?.showPhonesLoading()
             is Status.Error -> view?.showPhonesLoadError()
@@ -35,16 +36,28 @@ class CoroutineActivityPresenter @Inject constructor(private val phoneInteractor
 
     override fun onPresenterCreate() {
         super.onPresenterCreate()
+
         fetch(phoneInteractor.getPhones(), RequestType.GET_PHONES) {
             liveData.value = it
         }
-        complete({ phoneInteractor.saveDummyData() }, RequestType.TYPE_NONE) {
+
+        fetch({ phoneInteractor.doSomeHeavyWorkWithResult() }, RequestType.HEAVY_WORK_WITH_RESULT) {
+            Log.e("HeavyWorkWithResult ", "result is $it")
+        }
+
+        complete({ phoneInteractor.saveDummyData() }, RequestType.SAVE_DUMMY_DATA) {
             Log.e("saveDummyData ", "complete")
         }
     }
 
     override fun onRequestError(requestType: RequestType, throwable: Throwable) {
         super.onRequestError(requestType, throwable)
+        Log.e("onRequestError ", "For type $requestType with error ${throwable.message}")
         view?.showPhonesLoadError()
+    }
+
+    override fun onRequestStart(requestType: RequestType) {
+        super.onRequestStart(requestType)
+        Log.e("onRequestStart ", "For type $requestType started")
     }
 }
