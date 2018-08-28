@@ -1,8 +1,7 @@
-package io.armcha.arch
+package io.armcha.base
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.View
 
 abstract class BaseMVPFragment<V : BaseMVPContract.View, out P : BaseMVPContract.Presenter<V>>
@@ -18,7 +17,7 @@ abstract class BaseMVPFragment<V : BaseMVPContract.View, out P : BaseMVPContract
     @Suppress("UNCHECKED_CAST")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        delegate.create(this, this::insertStoreObject)
+        delegate.create(this, ::insertStoreObject)
         onStoredObjectReady(delegate.storedObject)
         presenter.attachLifecycle(lifecycle)
         presenter.attachView(this as V)

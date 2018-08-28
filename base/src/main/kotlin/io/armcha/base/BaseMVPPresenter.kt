@@ -1,4 +1,4 @@
-package io.armcha.arch
+package io.armcha.base
 
 
 import android.arch.lifecycle.Lifecycle

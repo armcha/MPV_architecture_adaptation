@@ -1,6 +1,6 @@
 package io.github.armcha.architecturesampleproject.ui.base
 
-import io.armcha.arch.BaseMVPActivity
+import io.armcha.base.BaseMVPActivity
 import io.github.armcha.architecturesampleproject.App
 import io.github.armcha.architecturesampleproject.di.component.ActivityComponent
 import io.github.armcha.architecturesampleproject.di.component.ScreenComponent

@@ -1,6 +1,6 @@
 package io.github.armcha.architecturesampleproject.ui.base
 
-import io.armcha.arch.BaseMVPContract
+import io.armcha.base.BaseMVPContract
 
 interface BaseContract {
 

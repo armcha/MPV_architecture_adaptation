@@ -105,8 +105,7 @@ class CoroutineFetcher @Inject constructor(@BgContext
         val key = resultListener.key
         jobMap.run {
             if (containsKey(key)) {
-                val list = this[key]
-                list?.forEach { it.cancel() }
+                this[key]?.forEach { it.cancel() }
                         ?.also { clear() }
                 remove(key)
             }

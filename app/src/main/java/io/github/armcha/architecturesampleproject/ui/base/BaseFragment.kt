@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.armcha.arch.BaseMVPFragment
+import io.armcha.base.BaseMVPFragment
 import io.github.armcha.architecturesampleproject.App
 import io.github.armcha.architecturesampleproject.di.component.FragmentComponent
 import javax.inject.Inject

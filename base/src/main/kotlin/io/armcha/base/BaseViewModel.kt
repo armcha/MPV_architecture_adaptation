@@ -1,7 +1,6 @@
-package io.armcha.arch
+package io.armcha.base
 
 import android.arch.lifecycle.ViewModel
-import android.util.Log
 
 class BaseViewModel : ViewModel() {
 

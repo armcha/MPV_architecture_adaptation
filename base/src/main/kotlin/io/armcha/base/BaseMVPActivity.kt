@@ -1,4 +1,4 @@
-package io.armcha.arch
+package io.armcha.base
 
 import android.os.Bundle
 import android.support.annotation.CallSuper
@@ -18,7 +18,7 @@ abstract class BaseMVPActivity<V : BaseMVPContract.View, out P : BaseMVPContract
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        delegate.create(this, this::insertStoreObject)
+        delegate.create(this, ::insertStoreObject)
         onStoredObjectReady(delegate.storedObject)
         presenter.attachLifecycle(lifecycle)
         presenter.attachView(this as V)
