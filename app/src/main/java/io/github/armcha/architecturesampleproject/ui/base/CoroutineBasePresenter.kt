@@ -29,7 +29,7 @@ abstract class CoroutineBasePresenter<V : BaseContract.View>
             return coroutineFetcher.getRequestStatus(this@CoroutineBasePresenter, this)
         }
 
-    protected infix fun RequestType.statusIs(status: Status) = coroutineFetcher.getRequestStatus(this@CoroutineBasePresenter, this) == status
+    protected infix fun RequestType.statusIs(status: Status) = this.status == status
 
     protected fun changeRequestStatus(requestType: RequestType, newStatus: Status) {
         coroutineFetcher.changeRequestStatus(this, requestType, newStatus)

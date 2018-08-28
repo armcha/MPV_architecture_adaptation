@@ -1,6 +1,5 @@
 package io.github.armcha.architecturesampleproject.domain.fetcher
 
-import android.util.Log
 import io.github.armcha.architecturesampleproject.di.qualifier.BgContext
 import io.github.armcha.architecturesampleproject.di.qualifier.UIContext
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
@@ -30,7 +29,7 @@ class CoroutineFetcher @Inject constructor(@BgContext
 
     fun <T> fetch(deferred: Deferred<T>, requestType: RequestType,
                   resultListener: ResultListener, success: (T) -> Unit) {
-        createOrGetJobList(resultListener).add(launch(uiContext) {
+        createOrGetJobList(resultListener) += launch(uiContext) {
             resultListener add requestType
             withContext(bgContext) { deferred.join() }
             if (!deferred.isCompletedExceptionally) {
@@ -41,17 +40,19 @@ class CoroutineFetcher @Inject constructor(@BgContext
                         ?: deferred.getCancellationException()
                 resultListener.sendErrorFor(requestType, throwable)
             }
-        })
+        }
     }
 
     fun <T> fetch(body: suspend () -> T, requestType: RequestType,
                   resultListener: ResultListener, success: (T) -> Unit) {
-        val exceptionHandler = resultListener exceptionHandlerFor requestType
-        createOrGetJobList(resultListener).add(launch(uiContext + exceptionHandler) {
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            resultListener.sendErrorFor(requestType, throwable)
+        }
+        createOrGetJobList(resultListener) += launch(uiContext + exceptionHandler) {
             resultListener add requestType
             val result = withContext(bgContext) { body() }
             resultListener.onSuccess(requestType, result, success)
-        })
+        }
     }
 
     fun complete(body: suspend () -> Unit, requestType: RequestType,
@@ -59,19 +60,17 @@ class CoroutineFetcher @Inject constructor(@BgContext
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
             resultListener.sendErrorFor(requestType, throwable)
         }
-        createOrGetJobList(resultListener).add(launch(uiContext + exceptionHandler) {
+        createOrGetJobList(resultListener) += launch(uiContext + exceptionHandler) {
             resultListener add requestType
             withContext(bgContext) { body() }
             changeRequestStatus(resultListener, requestType, Status.Success)
             success()
-        })
+        }
     }
 
     // TODO
-    fun completeCompletableDeferred(deferred: CompletableDeferred<Unit>, requestType: RequestType,
-                                    resultListener: ResultListener, success: () -> Unit) {
-
-        CompletableDeferred(Unit)
+    fun completeDeferred(deferred: CompletableDeferred<Unit>, requestType: RequestType,
+                         resultListener: ResultListener, success: () -> Unit) {
 
         createOrGetJobList(resultListener).add(launch(uiContext) {
             resultListener add requestType
@@ -107,14 +106,7 @@ class CoroutineFetcher @Inject constructor(@BgContext
         jobMap.run {
             if (containsKey(key)) {
                 val list = this[key]
-                list?.forEach {
-                    it.cancel()
-                    Log.e("clear ", "Clearing $it")
-                    Log.e("clear ", "isCancelled ${it.isCancelled}")
-                    Log.e("clear ", "isActive ${it.isActive}")
-                    Log.e("clear ", "isCompleted ${it.isCompleted}")
-                    //Log.e("clear ", "Clearing ${it}")
-                }
+                list?.forEach { it.cancel() }
                         ?.also { clear() }
                 remove(key)
             }
@@ -136,11 +128,12 @@ class CoroutineFetcher @Inject constructor(@BgContext
         return currentRequest?.get(requestType) ?: Status.Idle
     }
 
-    private infix fun ResultListener.exceptionHandlerFor(requestType: RequestType): CoroutineExceptionHandler {
-        return CoroutineExceptionHandler { _, throwable ->
-            sendErrorFor(requestType, throwable)
-        }
-    }
+//    private infix fun ResultListener.exceptionHandlerFor(requestType: RequestType): CoroutineExceptionHandler {
+//        return CoroutineExceptionHandler { _, throwable ->
+//            val jobb = jobMap[key]
+//            sendErrorFor(requestType, throwable)
+//        }
+//    }
 
     private infix fun ResultListener.add(requestType: RequestType) {
         onRequestStart(requestType)

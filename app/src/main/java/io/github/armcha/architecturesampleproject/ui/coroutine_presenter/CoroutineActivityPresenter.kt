@@ -21,12 +21,19 @@ class CoroutineActivityPresenter @Inject constructor(private val phoneInteractor
 
     @OnLifecycleEvent(value = Lifecycle.Event.ON_START)
     fun onStart() {
+
         Log.e("GET_PHONES", "STATUS IS ${RequestType.GET_PHONES.status.javaClass.simpleName}")
         Log.e("HEAVY_WORK_WITH_RESULT", "STATUS IS ${RequestType.HEAVY_WORK_WITH_RESULT.status.javaClass.simpleName}")
         Log.e("SAVE_DUMMY_DATA", "STATUS IS ${RequestType.SAVE_DUMMY_DATA.status.javaClass.simpleName}")
+
         when (RequestType.GET_PHONES.status) {
             is Status.Loading -> view?.showPhonesLoading()
             is Status.Error -> view?.showPhonesLoadError()
+        }
+
+        when (RequestType.HEAVY_WORK_WITH_RESULT.status) {
+            is Status.Loading -> view?.showPhonesLoading() //TODO
+            is Status.Error -> view?.showPhonesLoadError() //TODO
         }
 
         liveData.observe(this, NonNullObserver {
@@ -37,8 +44,10 @@ class CoroutineActivityPresenter @Inject constructor(private val phoneInteractor
     override fun onPresenterCreate() {
         super.onPresenterCreate()
 
-        fetch(phoneInteractor.getPhones(), RequestType.GET_PHONES) {
-            liveData.value = it
+        fetch(phoneInteractor.getPhones(), RequestType.GET_PHONES, liveData::setValue)
+
+        phoneInteractor.getPhones().fetch(RequestType.GET_PHONES) {
+
         }
 
         fetch({ phoneInteractor.doSomeHeavyWorkWithResult() }, RequestType.HEAVY_WORK_WITH_RESULT) {
