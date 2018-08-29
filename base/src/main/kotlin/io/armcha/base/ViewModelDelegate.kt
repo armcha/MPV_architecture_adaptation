@@ -4,8 +4,8 @@ import android.arch.lifecycle.ViewModelProviders
 import android.util.Log
 
 private typealias Presenter = BaseMVPContract.Presenter<*>
-private typealias Activity = BaseMVPActivity<*, *>
-private typealias Fragment = BaseMVPFragment<*, *>
+private typealias Activity = BaseMVPActivity<*, *, *>
+private typealias Fragment = BaseMVPFragment<*, *, *>
 
 class ViewModelDelegate {
 

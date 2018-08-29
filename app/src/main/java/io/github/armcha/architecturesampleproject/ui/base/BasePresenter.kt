@@ -38,9 +38,6 @@ abstract class BasePresenter<V : BaseContract.View>
         fetch(this, requestType, success)
     }
 
-    @Deprecated("Replace with status", ReplaceWith("status"), DeprecationLevel.WARNING)
-    protected fun RequestType.currentStatus() = rxFetcher.getRequestStatus(this@BasePresenter, this)
-
     protected val RequestType.status: Status
         get() {
             return rxFetcher.getRequestStatus(this@BasePresenter, this)

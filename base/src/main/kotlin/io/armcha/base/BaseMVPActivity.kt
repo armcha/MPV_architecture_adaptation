@@ -4,22 +4,22 @@ import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.support.v7.app.AppCompatActivity
 
-abstract class BaseMVPActivity<V : BaseMVPContract.View, out P : BaseMVPContract.Presenter<V>>
+abstract class BaseMVPActivity<V : BaseMVPContract.View, out P : BaseMVPContract.Presenter<V>, O>
     : AppCompatActivity(), BaseMVPContract.View, BaseViewModel.ClearCallBack {
 
     abstract val presenter: P
 
     private val delegate = ViewModelDelegate()
 
-    abstract fun onStoredObjectReady(storedObject: Any?)
-    abstract fun insertStoreObject(): Any?
+    abstract fun onStoredObjectReady(storedObject: O)
+    abstract fun insertStoreObject(): O
 
     @Suppress("UNCHECKED_CAST")
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         delegate.create(this, ::insertStoreObject)
-        onStoredObjectReady(delegate.storedObject)
+        onStoredObjectReady(delegate.storedObject as O)
         presenter.attachLifecycle(lifecycle)
         presenter.attachView(this as V)
     }

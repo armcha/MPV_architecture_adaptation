@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import io.armcha.base.BaseMVPFragment
 import io.github.armcha.architecturesampleproject.App
 import io.github.armcha.architecturesampleproject.di.component.FragmentComponent
+import io.github.armcha.architecturesampleproject.di.component.ScreenComponent
 import javax.inject.Inject
 
 abstract class BaseFragment<V : BaseContract.View, P : BaseContract.Presenter<V>>
-    : BaseMVPFragment<V, P>(), BaseContract.View {
+    : BaseMVPFragment<V, P, ScreenComponent>(), BaseContract.View {
 
     protected abstract val layoutResId: Int
 
@@ -25,13 +26,13 @@ abstract class BaseFragment<V : BaseContract.View, P : BaseContract.Presenter<V>
         return inflater.inflate(layoutResId, container, false)
     }
 
-    override fun insertStoreObject(): Any? {
+    override fun insertStoreObject(): ScreenComponent {
         return App.applicationComponent
                 .screenBuilder()
                 .build()
     }
 
-    override fun onStoredObjectReady(storedObject: Any?) {
+    override fun onStoredObjectReady(storedObject: ScreenComponent) {
         val base = activity as BaseActivity<*, *>
         fragmentComponent = base.activityComponent
                 .fragmentComponentBuilder()

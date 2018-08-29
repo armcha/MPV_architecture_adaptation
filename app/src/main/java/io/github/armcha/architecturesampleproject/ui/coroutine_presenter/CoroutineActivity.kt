@@ -3,7 +3,6 @@ package io.github.armcha.architecturesampleproject.ui.coroutine_presenter
 import android.os.Bundle
 import android.util.Log
 import io.github.armcha.architecturesampleproject.R
-import io.github.armcha.architecturesampleproject.domain.model.Event
 import io.github.armcha.architecturesampleproject.domain.model.Phone
 import io.github.armcha.architecturesampleproject.ui.base.BaseActivity
 
@@ -24,7 +23,7 @@ class CoroutineActivity : BaseActivity<CoroutineActivityContract.View, Coroutine
     }
 
     override fun showPhonesLoadError() {
-        //Log.e("showPhonesLoadError", "showPhonesLoadError")
+        Log.e("showPhonesLoadError", "showPhonesLoadError")
     }
 
     override fun inject() {

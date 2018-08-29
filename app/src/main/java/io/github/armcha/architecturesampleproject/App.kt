@@ -4,7 +4,6 @@ import android.app.Application
 import com.squareup.leakcanary.LeakCanary
 import io.github.armcha.architecturesampleproject.di.component.ApplicationComponent
 import io.github.armcha.architecturesampleproject.di.component.DaggerApplicationComponent
-import io.github.armcha.architecturesampleproject.di.module.ApplicationModule
 
 class App : Application() {
 

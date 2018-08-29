@@ -7,7 +7,7 @@ import io.github.armcha.architecturesampleproject.di.component.ScreenComponent
 import javax.inject.Inject
 
 abstract class BaseActivity<V : BaseContract.View, P : BaseContract.Presenter<V>>
-    : BaseMVPActivity<V, P>(), BaseContract.View {
+    : BaseMVPActivity<V, P, ScreenComponent>(), BaseContract.View {
 
     @Inject
     override lateinit var presenter: P
@@ -16,16 +16,14 @@ abstract class BaseActivity<V : BaseContract.View, P : BaseContract.Presenter<V>
 
     abstract fun inject()
 
-    override fun insertStoreObject(): Any? {
+    final override fun insertStoreObject(): ScreenComponent {
         return App.applicationComponent
                 .screenBuilder()
                 .build()
     }
 
-    override fun onStoredObjectReady(storedObject: Any?) {
-        val screenComponent = storedObject as ScreenComponent
-        activityComponent = screenComponent
-                .activityComponentBuilder()
+    final override fun onStoredObjectReady(storedObject: ScreenComponent) {
+        activityComponent = storedObject.activityComponentBuilder()
                 .activity(this)
                 .build()
         inject()
