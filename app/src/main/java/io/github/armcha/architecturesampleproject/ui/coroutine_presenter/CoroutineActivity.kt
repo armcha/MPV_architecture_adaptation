@@ -6,7 +6,8 @@ import io.github.armcha.architecturesampleproject.R
 import io.github.armcha.architecturesampleproject.domain.model.Phone
 import io.github.armcha.architecturesampleproject.ui.base.BaseActivity
 
-class CoroutineActivity : BaseActivity<CoroutineActivityContract.View, CoroutineActivityContract.Presenter>(), CoroutineActivityContract.View {
+class CoroutineActivity : BaseActivity<CoroutineActivityContract.View, CoroutineActivityContract.Presenter>(),
+        CoroutineActivityContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

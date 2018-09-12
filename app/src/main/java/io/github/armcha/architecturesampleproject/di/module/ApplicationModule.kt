@@ -9,9 +9,9 @@ import io.github.armcha.architecturesampleproject.di.qualifier.UIScheduler
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.CoroutineDispatcher
-import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.android.Main
 import javax.inject.Singleton
 
 @Module
@@ -30,10 +30,10 @@ class ApplicationModule {
     @Singleton
     @Provides
     @BgContext
-    fun provideBgContext(): CoroutineDispatcher = CommonPool
+    fun provideBgContext(): CoroutineDispatcher = Dispatchers.Default
 
     @Singleton
     @Provides
     @UIContext
-    fun provideUIContext(): CoroutineDispatcher = UI
+    fun provideUIContext(): CoroutineDispatcher = Dispatchers.Main
 }

@@ -29,7 +29,7 @@ class CoroutineFetcher @Inject constructor(@BgContext
 
     fun <T> fetch(deferred: Deferred<T>, requestType: RequestType,
                   resultListener: ResultListener, success: (T) -> Unit) {
-        createOrGetJobList(resultListener) += launch(uiContext) {
+        createOrGetJobList(resultListener) += GlobalScope.launch(uiContext) {
             resultListener add requestType
             withContext(bgContext) { deferred.join() }
             if (!deferred.isCompletedExceptionally) {
@@ -48,7 +48,7 @@ class CoroutineFetcher @Inject constructor(@BgContext
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
             resultListener.sendErrorFor(requestType, throwable)
         }
-        createOrGetJobList(resultListener) += launch(uiContext + exceptionHandler) {
+        createOrGetJobList(resultListener) += GlobalScope.launch(uiContext + exceptionHandler) {
             resultListener add requestType
             val result = withContext(bgContext) { body() }
             resultListener.onSuccess(requestType, result, success)
@@ -72,7 +72,7 @@ class CoroutineFetcher @Inject constructor(@BgContext
     fun completeDeferred(deferred: CompletableDeferred<Unit>, requestType: RequestType,
                          resultListener: ResultListener, success: () -> Unit) {
 
-        createOrGetJobList(resultListener).add(launch(uiContext) {
+        createOrGetJobList(resultListener).add(GlobalScope.launch(uiContext) {
             resultListener add requestType
             try {
                 withContext(bgContext) {

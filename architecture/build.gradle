@@ -9,6 +9,7 @@ apply plugin: 'kotlin-kapt'
 androidExtensions {
     experimental = true
 }
+
 kotlin {
     experimental {
         coroutines "enable"
@@ -47,17 +48,16 @@ android {
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':base')
-    implementation 'androidx.appcompat:appcompat:1.0.0-rc01'
+    implementation 'androidx.appcompat:appcompat:1.0.0-rc02'
     implementation 'com.google.dagger:dagger-android-support:2.16'
     implementation 'com.google.dagger:dagger:2.16'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.25.0"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.25.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.26.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.26.0"
     kapt 'com.google.dagger:dagger-android-processor:2.16'
     kapt "com.google.dagger:dagger-compiler:2.16"
     testImplementation 'junit:junit:4.12'

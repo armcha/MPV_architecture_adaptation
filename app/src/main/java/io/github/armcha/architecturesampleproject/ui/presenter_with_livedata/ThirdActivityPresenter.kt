@@ -9,7 +9,6 @@ import io.github.armcha.architecturesampleproject.domain.fetcher.Status
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
 import io.github.armcha.architecturesampleproject.domain.interactor.EventInteractor
 import io.github.armcha.architecturesampleproject.domain.model.Event
-import io.github.armcha.architecturesampleproject.domain.repository.EventRepository
 import io.github.armcha.architecturesampleproject.ui.base.BasePresenter
 import io.github.armcha.architecturesampleproject.ui.util.NonNullObserver
 import javax.inject.Inject
