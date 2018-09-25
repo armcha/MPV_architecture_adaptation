@@ -6,8 +6,8 @@ import io.github.armcha.architecturesampleproject.data.local.SomeLocalCache
 import io.github.armcha.architecturesampleproject.di.scope.PerScreen
 import io.github.armcha.architecturesampleproject.domain.model.Phone
 import io.github.armcha.architecturesampleproject.domain.repository.PhoneRepository
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import java.util.*
 import javax.inject.Inject
 

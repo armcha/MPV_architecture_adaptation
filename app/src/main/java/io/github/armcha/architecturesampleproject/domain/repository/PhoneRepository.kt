@@ -1,7 +1,7 @@
 package io.github.armcha.architecturesampleproject.domain.repository
 
 import io.github.armcha.architecturesampleproject.domain.model.Phone
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 
 interface PhoneRepository {
 

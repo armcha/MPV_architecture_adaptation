@@ -5,7 +5,7 @@ import io.github.armcha.architecturesampleproject.domain.fetcher.CoroutineFetche
 import io.github.armcha.architecturesampleproject.domain.fetcher.Status
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.ResultListener
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 import javax.inject.Inject
 
 abstract class CoroutineBasePresenter<V : BaseContract.View>

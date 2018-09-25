@@ -3,7 +3,7 @@ package io.github.armcha.architecturesampleproject.domain.interactor
 import io.github.armcha.architecturesampleproject.di.scope.PerScreen
 import io.github.armcha.architecturesampleproject.domain.model.Phone
 import io.github.armcha.architecturesampleproject.domain.repository.PhoneRepository
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 import javax.inject.Inject
 
 @PerScreen

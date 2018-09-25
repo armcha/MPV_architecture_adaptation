@@ -4,10 +4,11 @@ import io.github.armcha.architecturesampleproject.di.qualifier.BgContext
 import io.github.armcha.architecturesampleproject.di.qualifier.UIContext
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.ResultListener
-import kotlinx.coroutines.experimental.*
+import kotlinx.coroutines.*
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.coroutines.CoroutineContext
 
 /**
  *
@@ -19,7 +20,7 @@ import javax.inject.Singleton
 class CoroutineFetcher @Inject constructor(@BgContext
                                            private val bgContext: CoroutineDispatcher,
                                            @UIContext
-                                           private val uiContext: CoroutineDispatcher) {
+                                           private val uiContext: CoroutineDispatcher) : CoroutineScope {
 
     private val jobMap = ConcurrentHashMap<String, MutableList<Job>>()
     private val requestMap = ConcurrentHashMap<String, ConcurrentHashMap<RequestType, Status>>()
@@ -27,9 +28,12 @@ class CoroutineFetcher @Inject constructor(@BgContext
     private val ResultListener.key
         get() = javaClass.name
 
+    override val coroutineContext: CoroutineContext
+        get() = uiContext
+
     fun <T> fetch(deferred: Deferred<T>, requestType: RequestType,
                   resultListener: ResultListener, success: (T) -> Unit) {
-        createOrGetJobList(resultListener) += GlobalScope.launch(uiContext) {
+        createOrGetJobList(resultListener) += launch(uiContext) {
             resultListener add requestType
             withContext(bgContext) { deferred.join() }
             if (!deferred.isCompletedExceptionally) {
@@ -48,7 +52,7 @@ class CoroutineFetcher @Inject constructor(@BgContext
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
             resultListener.sendErrorFor(requestType, throwable)
         }
-        createOrGetJobList(resultListener) += GlobalScope.launch(uiContext + exceptionHandler) {
+        createOrGetJobList(resultListener) += launch(uiContext + exceptionHandler) {
             resultListener add requestType
             val result = withContext(bgContext) { body() }
             resultListener.onSuccess(requestType, result, success)
@@ -72,7 +76,7 @@ class CoroutineFetcher @Inject constructor(@BgContext
     fun completeDeferred(deferred: CompletableDeferred<Unit>, requestType: RequestType,
                          resultListener: ResultListener, success: () -> Unit) {
 
-        createOrGetJobList(resultListener).add(GlobalScope.launch(uiContext) {
+        createOrGetJobList(resultListener).add(launch(uiContext) {
             resultListener add requestType
             try {
                 withContext(bgContext) {
