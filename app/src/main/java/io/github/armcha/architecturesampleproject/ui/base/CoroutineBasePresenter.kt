@@ -5,7 +5,9 @@ import io.github.armcha.architecturesampleproject.domain.fetcher.CoroutineFetche
 import io.github.armcha.architecturesampleproject.domain.fetcher.Status
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.ResultListener
+import io.github.armcha.architecturesampleproject.ui.util.then
 import kotlinx.coroutines.Deferred
+import kotlin.reflect.KSuspendFunction0
 import javax.inject.Inject
 
 abstract class CoroutineBasePresenter<V : BaseContract.View>
@@ -45,7 +47,17 @@ abstract class CoroutineBasePresenter<V : BaseContract.View>
         coroutineFetcher.fetch(body, requestType, this, success)
     }
 
-    protected fun complete(body: suspend () -> Unit,
+    protected fun <TYPE> fetch(body: KSuspendFunction0<TYPE>, requestType: RequestType = RequestType.TYPE_NONE,
+                               success: (TYPE) -> Unit) {
+        coroutineFetcher.fetch(body, requestType, this, success)
+    }
+
+//    protected fun complete(body: suspend () -> Unit,
+//                           requestType: RequestType = RequestType.TYPE_NONE, success: () -> Unit = {}) {
+//        coroutineFetcher.complete(body, requestType, this, success)
+//    }
+
+    protected fun complete(body: KSuspendFunction0<Unit>,
                            requestType: RequestType = RequestType.TYPE_NONE, success: () -> Unit = {}) {
         coroutineFetcher.complete(body, requestType, this, success)
     }

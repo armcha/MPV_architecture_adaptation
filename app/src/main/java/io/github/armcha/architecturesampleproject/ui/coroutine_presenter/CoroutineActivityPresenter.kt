@@ -45,11 +45,11 @@ class CoroutineActivityPresenter @Inject constructor(private val phoneInteractor
 
         //phoneInteractor.getPhones().fetch(RequestType.GET_PHONES, liveData::setValue)
 
-        fetch({ phoneInteractor.doSomeHeavyWorkWithResult() }, RequestType.HEAVY_WORK_WITH_RESULT) {
+        fetch(phoneInteractor::doSomeHeavyWorkWithResult, RequestType.HEAVY_WORK_WITH_RESULT) {
             Log.e("HeavyWorkWithResult ", "result is $it")
         }
 
-        complete({ phoneInteractor.saveDummyData() }, RequestType.SAVE_DUMMY_DATA) {
+        complete(phoneInteractor::saveDummyData, RequestType.SAVE_DUMMY_DATA) {
             Log.e("saveDummyData ", "complete")
         }
     }

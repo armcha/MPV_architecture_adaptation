@@ -7,6 +7,7 @@ import io.github.armcha.architecturesampleproject.di.scope.PerScreen
 import io.github.armcha.architecturesampleproject.domain.model.Phone
 import io.github.armcha.architecturesampleproject.domain.repository.PhoneRepository
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import java.util.*
 import javax.inject.Inject
@@ -16,7 +17,7 @@ class PhoneDataRepository @Inject constructor(private val someApiService: SomeAp
                                               private val someLocalCache: SomeLocalCache) : PhoneRepository {
 
     override fun getDummyPhones(): Deferred<List<Phone>> {
-        return async {
+        return GlobalScope.async {
             SystemClock.sleep(5000)
             if (Random().nextBoolean()) {
                 throw IllegalStateException("Ooops you are unlucky")

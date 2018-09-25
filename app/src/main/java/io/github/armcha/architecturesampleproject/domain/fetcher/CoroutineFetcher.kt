@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.CoroutineContext
+import kotlin.reflect.KSuspendFunction0
 
 /**
  *
@@ -49,26 +50,49 @@ class CoroutineFetcher @Inject constructor(@BgContext
 
     fun <T> fetch(body: suspend () -> T, requestType: RequestType,
                   resultListener: ResultListener, success: (T) -> Unit) {
-        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            resultListener.sendErrorFor(requestType, throwable)
-        }
-        createOrGetJobList(resultListener) += launch(uiContext + exceptionHandler) {
+        createOrGetJobList(resultListener) += launch(uiContext
+                + exceptionHandler(resultListener, requestType)) {
             resultListener add requestType
             val result = withContext(bgContext) { body() }
             resultListener.onSuccess(requestType, result, success)
         }
     }
 
-    fun complete(body: suspend () -> Unit, requestType: RequestType,
-                 resultListener: ResultListener, success: () -> Unit) {
-        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            resultListener.sendErrorFor(requestType, throwable)
-        }
-        createOrGetJobList(resultListener) += launch(uiContext + exceptionHandler) {
+    fun <T> fetch(body: KSuspendFunction0<T>, requestType: RequestType,
+                  resultListener: ResultListener, success: (T) -> Unit) {
+        createOrGetJobList(resultListener) += launch(uiContext
+                + exceptionHandler(resultListener, requestType)) {
             resultListener add requestType
-            withContext(bgContext) { body() }
+            val result = withContext(bgContext) { body() }
+            resultListener.onSuccess(requestType, result, success)
+        }
+    }
+
+//    fun complete(body: suspend () -> Unit, requestType: RequestType,
+//                 resultListener: ResultListener, success: () -> Unit) {
+//        createOrGetJobList(resultListener) += launch(uiContext
+//                + exceptionHandler(resultListener, requestType)) {
+//            resultListener add requestType
+//            withContext(bgContext) { body() }
+//            changeRequestStatus(resultListener, requestType, Status.Success)
+//            success()
+//        }
+//    }
+
+    fun complete(body: KSuspendFunction0<Unit>, requestType: RequestType,
+                 resultListener: ResultListener, success: () -> Unit) {
+        createOrGetJobList(resultListener) += launch(uiContext
+                + exceptionHandler(resultListener, requestType)) {
+            resultListener add requestType
+            withContext(bgContext) { body.invoke() }
             changeRequestStatus(resultListener, requestType, Status.Success)
             success()
+        }
+    }
+
+    private fun exceptionHandler(resultListener: ResultListener, requestType: RequestType): CoroutineExceptionHandler {
+        return CoroutineExceptionHandler { _, throwable ->
+            resultListener.sendErrorFor(requestType, throwable)
         }
     }
 
@@ -130,13 +154,6 @@ class CoroutineFetcher @Inject constructor(@BgContext
         val currentRequest = requestMap[resultListener.key]
         return currentRequest?.get(requestType) ?: Status.Idle
     }
-
-//    private infix fun ResultListener.exceptionHandlerFor(requestType: RequestType): CoroutineExceptionHandler {
-//        return CoroutineExceptionHandler { _, throwable ->
-//            val jobb = jobMap[key]
-//            sendErrorFor(requestType, throwable)
-//        }
-//    }
 
     private infix fun ResultListener.add(requestType: RequestType) {
         onRequestStart(requestType)
