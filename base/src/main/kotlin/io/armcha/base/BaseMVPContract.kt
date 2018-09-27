@@ -1,7 +1,7 @@
 package io.armcha.base
 
 
-import android.arch.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle
 
 interface BaseMVPContract {
 

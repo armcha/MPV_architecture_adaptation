@@ -1,8 +1,8 @@
 package io.armcha.base
 
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.CallSuper
+import androidx.appcompat.app.AppCompatActivity
 
 abstract class BaseMVPActivity<V : BaseMVPContract.View, out P : BaseMVPContract.Presenter<V>, O>
     : AppCompatActivity(), BaseMVPContract.View, BaseViewModel.ClearCallBack {

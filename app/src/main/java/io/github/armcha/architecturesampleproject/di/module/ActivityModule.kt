@@ -1,7 +1,7 @@
 package io.github.armcha.architecturesampleproject.di.module
 
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import dagger.Module
 import dagger.Provides
@@ -18,6 +18,6 @@ class ActivityModule {
 
     @PerActivity
     @Provides
-    fun providesFragmentManager(activity: AppCompatActivity): FragmentManager =
+    fun providesFragmentManager(activity: AppCompatActivity): androidx.fragment.app.FragmentManager =
             activity.supportFragmentManager
 }

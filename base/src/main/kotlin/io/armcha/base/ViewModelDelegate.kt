@@ -1,6 +1,6 @@
 package io.armcha.base
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.util.Log
 
 private typealias Presenter = BaseMVPContract.Presenter<*>

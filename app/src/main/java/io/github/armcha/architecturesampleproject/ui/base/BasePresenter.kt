@@ -1,6 +1,6 @@
 package io.github.armcha.architecturesampleproject.ui.base
 
-import android.support.annotation.CallSuper
+import androidx.annotation.CallSuper
 import io.armcha.base.BaseMVPPresenter
 import io.github.armcha.architecturesampleproject.domain.fetcher.RxFetcher
 import io.github.armcha.architecturesampleproject.domain.fetcher.Status

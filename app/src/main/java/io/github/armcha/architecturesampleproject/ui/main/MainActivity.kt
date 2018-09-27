@@ -11,7 +11,6 @@ import io.github.armcha.architecturesampleproject.ui.base.BaseActivity
 import io.github.armcha.architecturesampleproject.ui.fragment.MainFragment
 import io.github.armcha.architecturesampleproject.ui.second.SecondActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Deferred
 
 
 class MainActivity : BaseActivity<MainActivityContract.View, MainActivityPresenter>(),

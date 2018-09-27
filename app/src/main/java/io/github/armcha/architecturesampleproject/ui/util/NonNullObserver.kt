@@ -1,6 +1,6 @@
 package io.github.armcha.architecturesampleproject.ui.util
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 
 class NonNullObserver<T>(private val onChange: (T) -> Unit) : Observer<T> {
 

@@ -1,11 +1,11 @@
 package io.armcha.base
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.View
 
 abstract class BaseMVPFragment<V : BaseMVPContract.View, out P : BaseMVPContract.Presenter<V>, O>
-    : Fragment(), BaseMVPContract.View, BaseViewModel.ClearCallBack {
+    : androidx.fragment.app.Fragment(), BaseMVPContract.View, BaseViewModel.ClearCallBack {
 
     protected abstract val presenter: P
 

@@ -1,8 +1,8 @@
 package io.github.armcha.architecturesampleproject.ui.coroutine_presenter
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.OnLifecycleEvent
 import android.util.Log
 import io.github.armcha.architecturesampleproject.di.scope.PerScreen
 import io.github.armcha.architecturesampleproject.domain.fetcher.Status
@@ -27,12 +27,10 @@ class CoroutineActivityPresenter @Inject constructor(private val phoneInteractor
 
         when (RequestType.GET_PHONES.status) {
             is Status.Loading -> view?.showPhonesLoading()
-            is Status.Error -> view?.showPhonesLoadError()
         }
 
         when (RequestType.HEAVY_WORK_WITH_RESULT.status) {
             is Status.Loading -> view?.showPhonesLoading() //TODO
-            is Status.Error -> view?.showPhonesLoadError() //TODO
         }
 
         liveData.observe(this, NonNullObserver(view!!::showPhones))
@@ -45,7 +43,7 @@ class CoroutineActivityPresenter @Inject constructor(private val phoneInteractor
 
         //phoneInteractor.getPhones().fetch(RequestType.GET_PHONES, liveData::setValue)
 
-        fetch(phoneInteractor::doSomeHeavyWorkWithResult, RequestType.HEAVY_WORK_WITH_RESULT) {
+        fetch(phoneInteractor.doSomeHeavyWorkWithResultRef, RequestType.HEAVY_WORK_WITH_RESULT) {
             Log.e("HeavyWorkWithResult ", "result is $it")
         }
 

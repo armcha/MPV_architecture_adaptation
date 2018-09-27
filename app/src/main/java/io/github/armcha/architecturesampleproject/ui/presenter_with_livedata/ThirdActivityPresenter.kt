@@ -1,8 +1,8 @@
 package io.github.armcha.architecturesampleproject.ui.presenter_with_livedata
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.OnLifecycleEvent
 import android.util.Log
 import io.github.armcha.architecturesampleproject.di.scope.PerScreen
 import io.github.armcha.architecturesampleproject.domain.fetcher.Status

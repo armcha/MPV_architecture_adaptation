@@ -1,7 +1,7 @@
 package io.github.armcha.architecturesampleproject.di.component
 
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import dagger.BindsInstance
 import dagger.Subcomponent
 import io.github.armcha.architecturesampleproject.di.module.ActivityModule

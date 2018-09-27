@@ -1,6 +1,6 @@
 package io.armcha.base
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 
 class BaseViewModel : ViewModel() {
 
