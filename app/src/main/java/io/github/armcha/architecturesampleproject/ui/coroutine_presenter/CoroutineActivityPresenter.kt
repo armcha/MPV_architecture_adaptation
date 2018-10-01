@@ -1,9 +1,9 @@
 package io.github.armcha.architecturesampleproject.ui.coroutine_presenter
 
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
-import android.util.Log
 import io.github.armcha.architecturesampleproject.di.scope.PerScreen
 import io.github.armcha.architecturesampleproject.domain.fetcher.Status
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
@@ -42,10 +42,6 @@ class CoroutineActivityPresenter @Inject constructor(private val phoneInteractor
         fetch(phoneInteractor.getPhones(), RequestType.GET_PHONES, liveData::setValue)
 
         //phoneInteractor.getPhones().fetch(RequestType.GET_PHONES, liveData::setValue)
-
-        fetch(phoneInteractor.doSomeHeavyWorkWithResultRef, RequestType.HEAVY_WORK_WITH_RESULT) {
-            Log.e("HeavyWorkWithResult ", "result is $it")
-        }
 
         complete(phoneInteractor::saveDummyData, RequestType.SAVE_DUMMY_DATA) {
             Log.e("saveDummyData ", "complete")

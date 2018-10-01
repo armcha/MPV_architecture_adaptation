@@ -2,8 +2,6 @@ package io.github.armcha.architecturesampleproject.di.module
 
 import dagger.Binds
 import dagger.Module
-import io.github.armcha.architecturesampleproject.di.component.ActivityComponent
-import io.github.armcha.architecturesampleproject.di.scope.PerScreen
 import io.github.armcha.architecturesampleproject.ui.coroutine_presenter.CoroutineActivityContract
 import io.github.armcha.architecturesampleproject.ui.coroutine_presenter.CoroutineActivityPresenter
 import io.github.armcha.architecturesampleproject.ui.fragment.MainFragmentContract
@@ -12,11 +10,8 @@ import io.github.armcha.architecturesampleproject.ui.fragment.SecondFragmentCont
 import io.github.armcha.architecturesampleproject.ui.fragment.SecondFragmentPresenter
 import io.github.armcha.architecturesampleproject.ui.main.MainActivityContract
 import io.github.armcha.architecturesampleproject.ui.main.MainActivityPresenter
-import io.github.armcha.architecturesampleproject.ui.presenter_with_livedata.ThirdActivity
 import io.github.armcha.architecturesampleproject.ui.presenter_with_livedata.ThirdActivityContract
 import io.github.armcha.architecturesampleproject.ui.presenter_with_livedata.ThirdActivityPresenter
-import io.github.armcha.architecturesampleproject.ui.second.SecondContract
-import io.github.armcha.architecturesampleproject.ui.second.SecondPresenter
 
 @Module
 abstract class PresenterModule {

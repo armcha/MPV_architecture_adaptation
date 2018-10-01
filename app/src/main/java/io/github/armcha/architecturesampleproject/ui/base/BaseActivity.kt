@@ -18,14 +18,14 @@ abstract class BaseActivity<V : BaseContract.View, P : BaseContract.Presenter<V>
 
     final override fun insertStoreObject(): ScreenComponent {
         return App.applicationComponent
-                .screenBuilder()
-                .build()
+            .screenBuilder()
+            .build()
     }
 
     final override fun onStoredObjectReady(storedObject: ScreenComponent) {
         activityComponent = storedObject.activityComponentBuilder()
-                .activity(this)
-                .build()
+            .activity(this)
+            .build()
         inject()
     }
 }

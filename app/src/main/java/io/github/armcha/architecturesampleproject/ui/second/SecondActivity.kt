@@ -3,7 +3,6 @@ package io.github.armcha.architecturesampleproject.ui.second
 import android.os.Bundle
 import android.util.Log
 import io.github.armcha.architecturesampleproject.R
-import io.github.armcha.architecturesampleproject.domain.interactor.SecondInteractor
 import io.github.armcha.architecturesampleproject.ui.base.BaseActivity
 
 

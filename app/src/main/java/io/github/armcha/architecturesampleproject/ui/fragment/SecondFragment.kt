@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import io.github.armcha.architecturesampleproject.R
 import io.github.armcha.architecturesampleproject.ui.base.BaseFragment
-import javax.inject.Inject
 
 
 class SecondFragment : BaseFragment<SecondFragmentContract.View, SecondFragmentContract.Presenter>(), SecondFragmentContract.View {

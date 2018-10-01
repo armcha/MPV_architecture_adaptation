@@ -16,6 +16,4 @@ class PhoneInteractor @Inject constructor(private val phoneRepository: PhoneRepo
     }
 
     suspend fun doSomeHeavyWorkWithResult() = phoneRepository.doSomeHeavyWork()
-
-    val doSomeHeavyWorkWithResultRef = phoneRepository::doSomeHeavyWork
 }

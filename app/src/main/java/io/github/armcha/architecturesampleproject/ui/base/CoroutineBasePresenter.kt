@@ -5,10 +5,9 @@ import io.github.armcha.architecturesampleproject.domain.fetcher.CoroutineFetche
 import io.github.armcha.architecturesampleproject.domain.fetcher.Status
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.RequestType
 import io.github.armcha.architecturesampleproject.domain.fetcher.result_listener.ResultListener
-import io.github.armcha.architecturesampleproject.ui.util.then
 import kotlinx.coroutines.Deferred
-import kotlin.reflect.KSuspendFunction0
 import javax.inject.Inject
+import kotlin.reflect.KSuspendFunction0
 
 abstract class CoroutineBasePresenter<V : BaseContract.View>
     : BaseMVPPresenter<V>(), BaseContract.Presenter<V>, ResultListener {

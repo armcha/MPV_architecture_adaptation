@@ -37,7 +37,7 @@ class CoroutineFetcher @Inject constructor(@BgContext
         createOrGetJobList(resultListener) += launch(uiContext) {
             resultListener add requestType
             withContext(bgContext) { deferred.join() }
-            if (!deferred.isCompletedExceptionally) {
+            if (!(deferred.isCancelled && deferred.isCompleted)) {
                 val result = deferred.getCompleted()
                 resultListener.onSuccess(requestType, result, success)
             } else {
