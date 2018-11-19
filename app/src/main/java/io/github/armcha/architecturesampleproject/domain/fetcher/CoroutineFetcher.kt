@@ -41,8 +41,7 @@ class CoroutineFetcher @Inject constructor(@BgContext
                 val result = deferred.getCompleted()
                 resultListener.onSuccess(requestType, result, success)
             } else {
-                val throwable = deferred.getCompletionExceptionOrNull()
-                        ?: deferred.getCancellationException()
+                val throwable = deferred.getCompletionExceptionOrNull()!! //FIXME
                 resultListener.sendErrorFor(requestType, throwable)
             }
         }
